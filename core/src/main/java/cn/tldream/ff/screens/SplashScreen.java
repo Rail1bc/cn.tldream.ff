@@ -2,6 +2,7 @@ package cn.tldream.ff.screens;
 
 import cn.tldream.ff.FightGame;
 import cn.tldream.ff.enums.ScreenType;
+import cn.tldream.ff.managers.ScreenManager;
 import cn.tldream.ff.managers.resource.ResourceManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
@@ -11,37 +12,31 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Timer;
 
 public class SplashScreen extends BaseScreen {
-    private Texture engineLogo;
-    private Texture studioLogoPart1;
-    private Texture studioLogoPart2;
-    private int currentPhase = 0;
-    private float alpha = 0;
-    private final float[] phaseTimes = {2f, 3f};
+    private Texture engineLogo;     // 引擎Logo
+    private Texture studioLogoPart1;    // 组合工作室Logo
+    private Texture studioLogoPart2;    // 组合工作室Logo
+    private int currentPhase = 0;   // 当前阶段
+    private float alpha = 0;    // 透明度
+    private final float[] phaseTimes = {2f, 3f};    // 不同阶段显示时间
 
     public SplashScreen(FightGame game) {
         super(game);
     }
 
-
+    /*获取核心资源*/
     @Override
-    // 加载资源（实际路径需要根据你的资源位置调整）
     public void loadAssets() {
         engineLogo = resourceManager.get("logos/libgdx.png", Texture.class);
         studioLogoPart1 = resourceManager.get("logos/tld_p1.png", Texture.class);
         studioLogoPart2 = resourceManager.get("logos/tld_p2.png", Texture.class);
         resourceManager.finishLoading();
         setAssetsLoaded(true);
-        game.getScreens().switchTo(SplashScreen.class);
+        ScreenManager.getInstance().switchTo(SplashScreen.class);
     }
 
     @Override
     public void show() {
         super.show();
-        // 获取所有Logo资源
-//        engineLogo = systems.resources.getByType(ResourceType.TEXTURE, ResourceKind.logo, "engine_logo", Texture.class);
-//        studioLogoPart1 = systems.resources.getByType(ResourceType.TEXTURE, ResourceKind.logo, "tld_logo_p1", Texture.class);
-//        studioLogoPart2 = systems.resources.getByType(ResourceType.TEXTURE, ResourceKind.logo, "tld_logo_p2", Texture.class);
-
 
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
@@ -125,20 +120,22 @@ public class SplashScreen extends BaseScreen {
         stage.dispose();
     }
 
+    /*绘制居中的纹理*/
     private void drawCentered(Texture texture) {
         float x = (Gdx.graphics.getWidth() - texture.getWidth())/2f;
         float y = (Gdx.graphics.getHeight() - texture.getHeight())/2f;
         stage.getBatch().draw(texture, x, y);
     }
 
+    /*切换到主界面菜单*/
     private void transitionToMainMenu() {
         Timer.instance().clear();
-        game.getScreens().switchTo(MainMenuScreen.class);
+        ScreenManager.getInstance().switchTo(MainMenuScreen.class);
     }
 
+    /*跳转到主界面菜单*/
     private void skipToMenu() {
         Timer.instance().clear();    // 取消所有定时任务
         transitionToMainMenu();      // 立即跳转
     }
-    // 其他需要实现的空方法...
 }

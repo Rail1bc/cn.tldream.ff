@@ -15,17 +15,18 @@ import org.lwjgl.Sys;
 
 /** {@link Game} implementation shared by all platforms. */
 public class FightGame extends Game {
-    private SpriteBatch batch;
-    private ScreenManager screens;
-    private Engine engine;
+    private SpriteBatch batch;  // 渲染器
+    private ScreenManager screens;  // 屏幕管理器
+    private Engine engine;  // ashley引擎
 
     @Override
     public void create() {
         // 初始化样式
         StyleManager.initialize(this);
+        ScreenManager.initialize(this);
 
         // 初始化资源管理器
-        screens = getScreens();
+        screens = ScreenManager.getInstance();
         screens.register(SplashScreen.class, new SplashScreen(this));
         screens.register(MainMenuScreen.class, new MainMenuScreen(this));
         screens.register(LoadingScreen.class, new LoadingScreen(this));
@@ -45,6 +46,7 @@ public class FightGame extends Game {
         engine.update(Gdx.graphics.getDeltaTime());
 
     }
+
     @Override
     public void dispose() {
         if (batch != null) {
@@ -57,18 +59,12 @@ public class FightGame extends Game {
         ResourceManager.getInstance().dispose();
     }
 
+    /*获取渲染器*/
     public SpriteBatch getBatch() {
         if (batch == null) {
             batch = new SpriteBatch();
         }
         return batch;
-    }
-
-    public ScreenManager getScreens() {
-        if (screens == null) {
-            screens = ScreenManager.initialize(this);
-        }
-        return screens;
     }
 
 }

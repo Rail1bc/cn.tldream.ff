@@ -2,6 +2,7 @@ package cn.tldream.ff.screens;
 
 
 import cn.tldream.ff.FightGame;
+import cn.tldream.ff.managers.ScreenManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -59,7 +60,7 @@ public class LoadingScreen extends BaseScreen {
         stage.getBatch().end();
 
         if (resourceManager.update()) {
-            game.getScreens().updateLoading();
+            ScreenManager.getInstance().updateLoading();
         }
 
 

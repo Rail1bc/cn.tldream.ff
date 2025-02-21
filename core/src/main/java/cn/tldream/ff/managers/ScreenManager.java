@@ -9,30 +9,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ScreenManager implements Disposable {
-    private static ScreenManager instance;
-    private final FightGame game;
+    private final static ScreenManager instance = new ScreenManager();
+    private static FightGame game;
     private final Map<Class<?>, BaseScreen> screens;
     private Class<? extends BaseScreen> pendingScreen;  // 待切换的屏幕
 
-    private ScreenManager(FightGame game) {
-        this.game = game;
+    /*单例模式*/
+    private ScreenManager() {
         this.screens = new HashMap<>();
     }
 
-    public static ScreenManager initialize(FightGame game) {
-        return instance = new ScreenManager(game);
+    public static void initialize(FightGame game) {
+        cn.tldream.ff.managers.ScreenManager.game = game;
     }
 
     public static ScreenManager getInstance() {
         return instance;
     }
 
-    // 注册屏幕
+    /*注册屏幕*/
     public <T extends BaseScreen> void register(Class<T> screenClass, T screen) {
         screens.put(screenClass, screen);
     }
 
-    // 切换屏幕
+    /*切换屏幕*/
     public <T extends BaseScreen> void switchTo(Class<T> screenClass) {
         BaseScreen screen = screens.get(screenClass);
         if (screen != null) {
@@ -46,7 +46,9 @@ public class ScreenManager implements Disposable {
         }
     }
 
-    // 更新加载进度
+    /*更新加载进度
+    如果有待切换的屏幕，则更新加载进度
+    如果加载完成，则切换屏幕*/
     public void updateLoading() {
         if (pendingScreen != null) {
             BaseScreen screen = screens.get(pendingScreen);
@@ -57,7 +59,7 @@ public class ScreenManager implements Disposable {
         }
     }
 
-    // 释放资源
+    /*释放资源*/
     @Override
     public void dispose() {
         for (BaseScreen screen : screens.values()) {

@@ -1,6 +1,7 @@
 package cn.tldream.ff.screens;
 
 import cn.tldream.ff.FightGame;
+import cn.tldream.ff.managers.ScreenManager;
 import cn.tldream.ff.screens.ui.ComponentFactory;
 import cn.tldream.ff.screens.ui.ResponsiveLayout;
 import cn.tldream.ff.screens.ui.UIComponent;
@@ -31,7 +32,7 @@ public class MainMenuScreen extends BaseScreen {
         table.setFillParent(true);  // 铺满整个屏幕
 
         // 创建按钮
-        addButton(table, "开始游戏", ()->game.getScreens().switchTo(GameScreen.class));
+        addButton(table, "开始游戏", ()-> ScreenManager.getInstance().switchTo(GameScreen.class));
         addButton(table, "设置", ()->System.out.println("设置按钮"));
         addButton(table, "退出", Gdx.app::exit);
 
