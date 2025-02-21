@@ -24,33 +24,44 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ResourceManager extends AssetManager{
-    private ResourceManager instance;
-    private final FightGame game;
+    private final static ResourceManager instance = new ResourceManager();
     private final Map<String, ResourcesType> resTypeMap = new HashMap<>();
     private final Map<String, ResourcesItem> resItemMap = new HashMap<>();
     private final Map<String, ConfigsType> cfgTypeMap = new HashMap<>();
 
-    public ResourceManager(FightGame game) {
-        this.game = game;
-        this.instance = this;
+    /**
+     * 单例模式
+     */
+
+    public static ResourceManager getInstance() {
+        return instance;
+    }
+
+    private ResourceManager() {
         initialize();
     }
 
-    // 初始化资源管理器
+    /**
+     * 初始化资源管理器
+     */
     private void initialize() {
         loadConfiguration();
         loadAssets();
         freeTypeFontLoader();
     }
 
-    // 加载资源配置
+    /**
+    * 加载资源配置
+    */
     private void loadConfiguration() {
         resTypeMap.put("texture", new TextureConfig().init());
         resTypeMap.put("skin", new SkinConfig().init());
         resTypeMap.put("font", new FontConfig().init());
     }
 
-    // 加载核心资源
+    /**
+     * 强制加载核心资源
+     */
     private void loadAssets() {
 
         load(resTypeMap.get(ResourceType.SKIN.getValue()).getPath(ResourceKind.uiskin,"default"),Skin.class);
@@ -60,7 +71,9 @@ public class ResourceManager extends AssetManager{
         finishLoading();
     }
 
-    // 设置FreeType 字体加载器
+    /**
+     * 设置FreeType 字体加载器
+     */
     private void freeTypeFontLoader() {
         FileHandleResolver resolver = new InternalFileHandleResolver();
         setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));

@@ -14,12 +14,13 @@ public class StyleManager {
     private static FightGame game;
     private static Skin skin;
     private static final String DEFAULT_SKIN = "ui/uiskin.json";
+    private static final ResourceManager resourceManager = ResourceManager.getInstance();
 
     // 初始化样式
     public static void initialize(FightGame game) {
         StyleManager.game = game;
-        game.getResources().load(DEFAULT_SKIN, Skin.class);
-        skin = game.getResources().get(DEFAULT_SKIN, Skin.class);
+        resourceManager.load(DEFAULT_SKIN, Skin.class);
+        skin = resourceManager.get(DEFAULT_SKIN, Skin.class);
     }
 
     // 获取样式
@@ -49,12 +50,12 @@ public class StyleManager {
         parameter.fontParameters.size = size;
 
         // 加载字体
-        game.getResources().load("fonts/simhei.ttf", BitmapFont.class , parameter);
+        resourceManager.load("fonts/simhei.ttf", BitmapFont.class , parameter);
 
-        game.getResources().finishLoading();
+        resourceManager.finishLoading();
 
         // 获取字体
-        BitmapFont myBigFont = game.getResources().get("fonts/simhei.ttf", BitmapFont.class);
+        BitmapFont myBigFont = resourceManager.get("fonts/simhei.ttf", BitmapFont.class);
         // 设置字体支持Markup
         myBigFont.getData().markupEnabled = true;
         return myBigFont;

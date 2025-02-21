@@ -2,6 +2,7 @@ package cn.tldream.ff.screens;
 
 import cn.tldream.ff.FightGame;
 import cn.tldream.ff.enums.ScreenType;
+import cn.tldream.ff.managers.resource.ResourceManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.GL20;
@@ -25,10 +26,10 @@ public class SplashScreen extends BaseScreen {
     @Override
     // 加载资源（实际路径需要根据你的资源位置调整）
     public void loadAssets() {
-        engineLogo = game.getResources().get("logos/libgdx.png", Texture.class);
-        studioLogoPart1 = game.getResources().get("logos/tld_p1.png", Texture.class);
-        studioLogoPart2 = game.getResources().get("logos/tld_p2.png", Texture.class);
-        game.getResources().finishLoading();
+        engineLogo = resourceManager.get("logos/libgdx.png", Texture.class);
+        studioLogoPart1 = resourceManager.get("logos/tld_p1.png", Texture.class);
+        studioLogoPart2 = resourceManager.get("logos/tld_p2.png", Texture.class);
+        resourceManager.finishLoading();
         setAssetsLoaded(true);
         game.getScreens().switchTo(SplashScreen.class);
     }

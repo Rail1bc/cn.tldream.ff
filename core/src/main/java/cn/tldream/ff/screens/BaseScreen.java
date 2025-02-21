@@ -15,7 +15,7 @@ public abstract class BaseScreen implements Screen {
 
     public BaseScreen(FightGame game) {
         this.game = game;
-        this.resourceManager = game.getResources();
+        this.resourceManager = ResourceManager.getInstance();
         stage = new Stage();
         uiManager = new UIManager(stage);
     }

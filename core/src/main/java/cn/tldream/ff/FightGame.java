@@ -16,7 +16,6 @@ import org.lwjgl.Sys;
 /** {@link Game} implementation shared by all platforms. */
 public class FightGame extends Game {
     private SpriteBatch batch;
-    private ResourceManager resources;
     private ScreenManager screens;
     private Engine engine;
 
@@ -51,14 +50,11 @@ public class FightGame extends Game {
         if (batch != null) {
             batch.dispose();
         }
-        if (resources != null) {
-            resources.dispose();
-        }
         if (screens != null) {
             screens.dispose();
         }
         StyleManager.dispose();
-
+        ResourceManager.getInstance().dispose();
     }
 
     public SpriteBatch getBatch() {
@@ -66,13 +62,6 @@ public class FightGame extends Game {
             batch = new SpriteBatch();
         }
         return batch;
-    }
-
-    public ResourceManager getResources() {
-        if (resources == null) {
-            resources = new ResourceManager(this);
-        }
-        return resources;
     }
 
     public ScreenManager getScreens() {
