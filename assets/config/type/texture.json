@@ -1,0 +1,23 @@
+{
+  "texture" :{
+    "logo": {
+      "engine_logo": {
+        "path": "logos/libgdx.png"
+      },
+      "tld_logo_p1": {
+        "path": "logos/tld_p1.png"
+      },
+      "tld_logo_p2": {
+        "path": "logos/tld_p2.png"
+      }
+    },
+    "heightmap": {
+      "heightmap": {
+        "path": "map/heightmaps/heightmap.png"
+      },
+      "heightmap_mini": {
+        "path": "map/heightmaps/heightmapMini.png"
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "skin": {
+    "uiskin": {
+      "default": {
+        "path": "ui/uiskin.json"
+      }
+    }
+  }
+}

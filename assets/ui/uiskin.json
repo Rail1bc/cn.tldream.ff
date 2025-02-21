@@ -1,0 +1,26 @@
+{
+  "com.badlogic.gdx.graphics.Color": {
+    "white": { "hex" : "ffffffff"},
+    "black": { "hex" : "000000ff"},
+    "red": { "hex" : "ff0000ff"},
+    "green": { "hex" : "00ff00ff"},
+    "blue": { "hex" : "0000ffff"},
+    "yellow": { "hex" : "ffff00ff"},
+    "orange": { "hex" : "ffa500ff"},
+    "purple": { "hex" : "800080ff"},
+    "gray": { "hex" : "808080ff"},
+    "lightgray": { "hex" : "c0c0c0ff"},
+    "darkgray": { "hex" : "404040ff"}
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
+    "default": {
+      "fontColor": "black",
+      "overFontColor": "blue",
+      "downFontColor": "purple",
+      "up": "button-up",
+      "down": "button-down",
+      "checked": "button-disabled"
+
+    }
+  }
+}
