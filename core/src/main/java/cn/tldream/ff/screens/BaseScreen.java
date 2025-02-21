@@ -7,11 +7,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public abstract class BaseScreen implements Screen {
-    protected final FightGame game;
-    protected final ResourceManager resourceManager;
-    protected UIManager uiManager;
-    protected Stage stage;
-    private boolean assetsLoaded = false;
+    protected final FightGame game; // 引用FightGame
+    protected final ResourceManager resourceManager;    // 资源管理器
+    protected UIManager uiManager;  // UI管理器
+    protected Stage stage;  // 场景
+    private boolean assetsLoaded = false;   // 资源是否加载
 
     public BaseScreen(FightGame game) {
         this.game = game;

@@ -24,10 +24,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ResourceManager extends AssetManager{
-    private final static ResourceManager instance = new ResourceManager();
-    private final Map<String, ResourcesType> resTypeMap = new HashMap<>();
-    private final Map<String, ResourcesItem> resItemMap = new HashMap<>();
-    private final Map<String, ConfigsType> cfgTypeMap = new HashMap<>();
+    private final static ResourceManager instance = new ResourceManager();  // 单例
+    private final Map<String, ResourcesType> resTypeMap = new HashMap<>();  // 资源类型
+    private final Map<String, ResourcesItem> resItemMap = new HashMap<>();  // 资源项
+    private final Map<String, ConfigsType> cfgTypeMap = new HashMap<>();    // 配置类型
 
     /**
      * 单例模式

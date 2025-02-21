@@ -12,9 +12,9 @@ import com.badlogic.gdx.utils.Align;
 public class LoadingScreen extends BaseScreen {
     private float baseSize = 50f; // 基础图形尺寸
     private float currentScale = 0.5f; // 初始缩放
-    private ShapeRenderer shapeRenderer;
-    private BitmapFont font;
-    private StringBuilder progressText;
+    private ShapeRenderer shapeRenderer;    // 用于绘制图形
+    private BitmapFont font;    // 用于绘制文本
+    private StringBuilder progressText; // 用于绘制进度文本
 
     public LoadingScreen(FightGame game) {
         super(game);

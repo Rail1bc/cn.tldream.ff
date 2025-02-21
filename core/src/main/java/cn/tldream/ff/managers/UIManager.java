@@ -9,8 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
 
 public class UIManager {
-    private final Array<UIComponent> components = new Array<>();
-    private final Stage stage;
+    private final Array<UIComponent> components = new Array<>(); // UI组件
+    private final Stage stage;  // 舞台
 
     public UIManager(Stage stage) {
         this.stage = stage;

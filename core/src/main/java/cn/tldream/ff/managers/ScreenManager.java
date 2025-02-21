@@ -9,9 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ScreenManager implements Disposable {
-    private final static ScreenManager instance = new ScreenManager();
-    private static FightGame game;
-    private final Map<Class<?>, BaseScreen> screens;
+    private final static ScreenManager instance = new ScreenManager();  // 单例
+    private static FightGame game;     // 游戏实例
+    private final Map<Class<?>, BaseScreen> screens;    // 屏幕列表
     private Class<? extends BaseScreen> pendingScreen;  // 待切换的屏幕
 
     /*单例模式*/

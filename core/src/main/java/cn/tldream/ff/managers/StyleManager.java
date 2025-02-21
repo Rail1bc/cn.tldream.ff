@@ -11,10 +11,10 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class StyleManager {
-    private static FightGame game;
-    private static Skin skin;
-    private static final String DEFAULT_SKIN = "ui/uiskin.json";
-    private static final ResourceManager resourceManager = ResourceManager.getInstance();
+    private static FightGame game; // 游戏实例
+    private static Skin skin;   // 皮肤
+    private static final String DEFAULT_SKIN = "ui/uiskin.json";    // 默认皮肤
+    private static final ResourceManager resourceManager = ResourceManager.getInstance();   // 资源管理器
 
     // 初始化样式
     public static void initialize(FightGame game) {
