@@ -1,11 +1,9 @@
 package cn.tldream.ff.managers;
 
-import cn.tldream.ff.FightGame;
 import cn.tldream.ff.screens.ui.StatefulComponent;
 import cn.tldream.ff.screens.ui.UIComponent;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
 
 public class UIManager {
