@@ -29,7 +29,6 @@ allprojects {
 
 configure(subprojects) {
   apply plugin: 'java-library'
-  apply plugin: 'groovy'
   sourceCompatibility = 17
 
   // From https://lyze.dev/2021/04/29/libGDX-Internal-Assets-List/

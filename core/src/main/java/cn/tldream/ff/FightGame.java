@@ -11,7 +11,6 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import org.lwjgl.Sys;
 
 /** {@link Game} implementation shared by all platforms. */
 public class FightGame extends Game {

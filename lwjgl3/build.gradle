@@ -57,29 +57,8 @@ run {
   if (os.contains('mac')) jvmArgs += "-XstartOnFirstThread"
 }
 
-jar {
-// sets the name of the .jar file this produces to the name of the game or app, with the version after.
-  archiveFileName.set("${appName}-${projectVersion}.jar")
-// the duplicatesStrategy matters starting in Gradle 7.0; this setting works.
-  duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
-  dependsOn configurations.runtimeClasspath
-  from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
-// these "exclude" lines remove some unnecessary duplicate files in the output JAR.
-  exclude('META-INF/INDEX.LIST', 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA')
-  dependencies {
-    exclude('META-INF/INDEX.LIST', 'META-INF/maven/**')
-  }
-// setting the manifest makes the JAR runnable.
-  manifest {
-    attributes 'Main-Class': project.mainClassName
-  }
-// this last step may help on some OSes that need extra instruction to make runnable JARs.
-  doLast {
-    file(archiveFile).setExecutable(true, false)
-  }
-}
-
 construo {
+
     // name of the executable
     name.set(appName)
     // human-readable name, used for example in the `.app` name for macOS
@@ -122,6 +101,36 @@ tasks.register('dist') {
   dependsOn 'jar'
 }
 
+// fat jar 打包
+// 旧JAR构建方式
+jar {
+  // 设置JAR包命名格式为应用名-版本号.jar
+  archiveFileName.set("${appName}-${projectVersion}.jar")
+  // 依赖处理
+  // 排除重复文件避免构建错误
+  // 将runtimeClasspath的所有依赖（包括第三方库）解压后合并到最终JAR中
+  duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+  dependsOn configurations.runtimeClasspath
+  from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+  // 文件过滤
+  // 移除签名文件（.SF/.DSA/.RSA）避免安全校验冲突
+  // 排除Maven元数据文件减少包体积
+  exclude('META-INF/INDEX.LIST', 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA')
+  dependencies {
+    exclude('META-INF/INDEX.LIST', 'META-INF/maven/**')
+  }
+  // 可执行配置
+  // 设置Main-Class使JAR可执行
+  manifest {
+    attributes 'Main-Class': project.mainClassName
+  }
+  // 赋予JAR文件Unix系统的可执行权限
+  doLast {
+    file(archiveFile).setExecutable(true, false)
+  }
+}
+
+// 旧发布包结构
 distributions {
   main {
     contents {
