@@ -4,7 +4,7 @@ buildscript {
     gradlePluginPortal()
   }
   dependencies {
-    classpath "io.github.fourlastor:construo:1.5.1"
+    classpath "io.github.fourlastor:construo:1.7.1"
     if(enableGraalNative == 'true') {
       classpath "org.graalvm.buildtools.native:org.graalvm.buildtools.native.gradle.plugin:0.9.28"
     }
@@ -18,7 +18,8 @@ apply plugin: 'io.github.fourlastor.construo'
 
 import io.github.fourlastor.construo.Target
 
-sourceSets.main.resources.srcDirs += [ rootProject.file('assets').path ]
+// 注释显式设置资源目录，禁用将资源打包进主jar
+//sourceSets.main.resources.srcDirs += [ rootProject.file('assets').path ]
 mainClassName = 'cn.tldream.ff.lwjgl3.Lwjgl3Launcher'
 application.setMainClass(mainClassName)
 eclipse.project.name = appName + '-lwjgl3'
@@ -58,12 +59,11 @@ run {
 }
 
 construo {
-
-    // name of the executable
+    // 可执行文件的名称
     name.set(appName)
-    // human-readable name, used for example in the `.app` name for macOS
+    // 人类可读的名称，例如在macOS的.app名称中使用
     humanName.set(appName)
-    // Optional, defaults to project version property
+    // 可选，默认为项目版本属性
     version.set("$projectVersion")
 
     targets.configure {
@@ -90,23 +90,24 @@ construo {
       create("winX64", Target.Windows) {
         architecture.set(Target.Architecture.X86_64)
         jdkUrl.set("https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.12%2B7/OpenJDK17U-jdk_x64_windows_hotspot_17.0.12_7.zip")
-        // Uncomment the next line to show a console when the game runs, to print messages.
-        //useConsole.set(true)
+        // 在游戏运行时显示控制台，打印消息。
+        useConsole.set(true)
       }
     }
 }
 
-// Equivalent to the jar task; here for compatibility with gdx-setup.
+// 相当于jar任务；这里是为了与gdx设置兼容。
 tasks.register('dist') {
   dependsOn 'jar'
 }
 
-// fat jar 打包
-// 旧JAR构建方式
+// jar 打包
 jar {
   // 设置JAR包命名格式为应用名-版本号.jar
   archiveFileName.set("${appName}-${projectVersion}.jar")
-  // 依赖处理
+
+  // 注释依赖打包，禁用将依赖打包进主jar
+  /*// 依赖处理
   // 排除重复文件避免构建错误
   // 将runtimeClasspath的所有依赖（包括第三方库）解压后合并到最终JAR中
   duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
@@ -118,28 +119,32 @@ jar {
   exclude('META-INF/INDEX.LIST', 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA')
   dependencies {
     exclude('META-INF/INDEX.LIST', 'META-INF/maven/**')
-  }
+  }*/
+
   // 可执行配置
   // 设置Main-Class使JAR可执行
-  manifest {
-    attributes 'Main-Class': project.mainClassName
-  }
+  attributes (
+    'Main-Class': project.mainClassName,
+    'Class-Path': configurations.runtimeClasspath.files.collect { "lib/${it.name}" }.join(' ')
+  )
   // 赋予JAR文件Unix系统的可执行权限
   doLast {
     file(archiveFile).setExecutable(true, false)
   }
 }
 
-// 旧发布包结构
+// 定义发布包结构
 distributions {
   main {
     contents {
-      into('libs') {
-        project.configurations.runtimeClasspath.files.findAll { file ->
-          file.getName() != project.tasks.jar.outputs.files.singleFile.name
-        }.each { file ->
-          exclude file.name
-        }
+      // 根目录
+      into(''){
+        from(jar)
+        from startScripts
+      }
+      // 资源
+      into('assets') {
+        from rootProject.file('assets').path
       }
     }
   }
