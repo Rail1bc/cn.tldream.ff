@@ -34,7 +34,6 @@ public class SplashScreen extends BaseScreen {
     public void show() {
         super.show();
 
-        Gdx.app.log("SplashScreen","show!");
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
@@ -65,7 +64,6 @@ public class SplashScreen extends BaseScreen {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        Gdx.app.log("SplashScreen","render!");
         alpha = Math.min(alpha + delta * 200, 1); // 加快淡入速度
 
         stage.getBatch().begin();

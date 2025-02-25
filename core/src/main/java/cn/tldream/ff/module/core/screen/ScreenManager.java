@@ -11,7 +11,6 @@ import java.util.Map;
 
 public class ScreenManager implements Disposable {
     private final FightGame game;     // 游戏实例
-    private ResourceModule resource;
     private final Map<Class<?>, BaseScreen> screens = new HashMap<>();  // 屏幕列表
     private Class<? extends BaseScreen> pendingScreen;  // 待切换的屏幕
 
@@ -22,7 +21,6 @@ public class ScreenManager implements Disposable {
 
     /*初始化引用*/
     public void initialize(){
-        this.resource = this.game.getModuleManager().getModule( "resource",ResourceModule.class);
         register(SplashScreen.class, new SplashScreen(game));
         register(LoadingScreen.class, new LoadingScreen(game));
         register(GameScreen.class, new GameScreen(game));

@@ -1,10 +1,8 @@
 package cn.tldream.ff.module.core.resource;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.AbsoluteFileHandleResolver;
-import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -23,7 +21,6 @@ public class ResourceManager extends AssetManager{
             @Override
             public FileHandle resolve(String fileName) {
                 // 统一在此处做单次路径拼接
-                Gdx.app.log("resolve", fileName);
                 if (fileName.startsWith(assetsPath) || fileName.startsWith(assetsPath.replace('\\','/'))) {
                     return super.resolve(fileName);
                 }
@@ -72,8 +69,6 @@ public class ResourceManager extends AssetManager{
         BitmapFont myBigFont = get(assetsPath + "fonts/simhei.ttf", BitmapFont.class);
         // 设置字体支持Markup
         myBigFont.getData().markupEnabled = true;
-
-        Gdx.app.log("Font","加载完成");
 
         return myBigFont;
     }

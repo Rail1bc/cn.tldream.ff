@@ -1,8 +1,6 @@
 package cn.tldream.ff.module.core.resource;
 
 import cn.tldream.ff.module.GameModule;
-import cn.tldream.ff.module.Updatable;
-import com.badlogic.gdx.Gdx;
 
 public class ResourceModule implements GameModule {
     private final ResourceManager resourceManager;
