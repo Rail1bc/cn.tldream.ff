@@ -1,8 +1,8 @@
 package cn.tldream.ff.systems;
 
-import cn.tldream.ff.game.components.MovementComponent;
-import cn.tldream.ff.game.components.PositionComponent;
-import cn.tldream.ff.game.systems.MovementSystem;
+import cn.tldream.ff.old.game.components.MovementComponent;
+import cn.tldream.ff.old.game.components.PositionComponent;
+import cn.tldream.ff.old.game.systems.MovementSystem;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import org.junit.Before;

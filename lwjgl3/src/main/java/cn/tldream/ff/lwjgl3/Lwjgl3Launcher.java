@@ -1,5 +1,6 @@
 package cn.tldream.ff.lwjgl3;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import cn.tldream.ff.FightGame;
@@ -8,11 +9,13 @@ import cn.tldream.ff.FightGame;
 public class Lwjgl3Launcher {
     public static void main(String[] args) {
         if (StartupHelper.startNewJvmIfRequired()) return; // This handles macOS support and helps on Windows.
-        createApplication();
+        String path = null;
+        if(args.length == 1) path = args[0];;
+        createApplication(path);
     }
 
-    private static Lwjgl3Application createApplication() {
-        return new Lwjgl3Application(new FightGame(), getDefaultConfiguration());
+    private static Lwjgl3Application createApplication(String path) {
+        return new Lwjgl3Application(new FightGame(path), getDefaultConfiguration());
     }
 
     private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {

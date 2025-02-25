@@ -123,10 +123,13 @@ jar {
 
   // 可执行配置
   // 设置Main-Class使JAR可执行
-  attributes (
-    'Main-Class': project.mainClassName,
-    'Class-Path': configurations.runtimeClasspath.files.collect { "lib/${it.name}" }.join(' ')
-  )
+  manifest {
+    attributes (
+      'Main-Class': project.mainClassName,
+//      'Class-Path': configurations.runtimeClasspath.files.collect { "lib/" + it.name }.join(' ')
+      'Class-Path': configurations.runtimeClasspath.files.collect { "lib/${it.name}"  }.join(' ')
+    )
+  }
   // 赋予JAR文件Unix系统的可执行权限
   doLast {
     file(archiveFile).setExecutable(true, false)
@@ -150,8 +153,8 @@ distributions {
   }
 }
 
-startScripts.dependsOn(':lwjgl3:jar')
-startScripts.classpath = project.tasks.jar.outputs.files
+//startScripts.dependsOn(':lwjgl3:jar')
+//startScripts.classpath = project.tasks.jar.outputs.files
 
 if(enableGraalNative == 'true') {
   apply from: file("nativeimage.gradle")

@@ -1,6 +1,6 @@
 package cn.tldream.ff.components;
 
-import cn.tldream.ff.game.components.PositionComponent;
+import cn.tldream.ff.old.game.components.PositionComponent;
 import com.badlogic.gdx.math.Vector3;
 import org.junit.Test;
 
