@@ -1,9 +1,11 @@
 package cn.tldream.ff.module.core.resource;
 
-import com.badlogic.gdx.assets.AssetLoaderParameters;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.AbsoluteFileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -13,15 +15,26 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 
 public class ResourceManager extends AssetManager{
-    private final String assetsPath; // 资源目录路径
+    private final String assetsPath;
+    private FreetypeFontLoader.FreeTypeFontLoaderParameter parameter;
 
     public ResourceManager(String assetsPath) {
+        super(new AbsoluteFileHandleResolver() {
+            @Override
+            public FileHandle resolve(String fileName) {
+                // 统一在此处做单次路径拼接
+                Gdx.app.log("resolve", fileName);
+                if (fileName.startsWith(assetsPath) || fileName.startsWith(assetsPath.replace('\\','/'))) {
+                    return super.resolve(fileName);
+                }
+                else return super.resolve(assetsPath + fileName);
+            }
+        });
         this.assetsPath = assetsPath;
-        initialize();
     }
 
     /*初始化资源管理器*/
-    private void initialize() {
+    public void initialize() {
         loadAssets();
         freeTypeFontLoader();
     }
@@ -29,54 +42,40 @@ public class ResourceManager extends AssetManager{
     /*强制加载核心资源*/
     private void loadAssets() {
 
-        load("ui/uiskin.json",Skin.class);
-        load("logos/libgdx.png",Texture.class);
-        load("logos/tld_p1.png",Texture.class);
-        load("logos/tld_p2.png",Texture.class);
+        this.load("ui/uiskin.json",Skin.class);
+        this.load("logos/libgdx.png",Texture.class);
+        this.load("logos/tld_p1.png",Texture.class);
+        this.load("logos/tld_p2.png",Texture.class);
         finishLoading();
     }
 
     /*设置FreeType 字体加载器*/
     private void freeTypeFontLoader() {
-        FileHandleResolver resolver = new InternalFileHandleResolver();
+        FileHandleResolver resolver = new AbsoluteFileHandleResolver();
         setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
         setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
+
+        parameter = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        parameter.fontParameters.incremental = true;
+        parameter.fontFileName = assetsPath + "fonts/simhei.ttf";
     }
 
-    /*重写父类方法，自动拼接资源路径*/
-    @Override
-    public <T> T get(String fileName, Class<T> type) {
-        return super.get(assetsPath + fileName, type);
+    public BitmapFont getFont(int size) {
+        parameter.fontParameters.size = size;
+
+        // 加载字体
+        load(assetsPath + "fonts/simhei.ttf", BitmapFont.class , parameter);
+
+        finishLoading();
+
+        // 获取字体
+        BitmapFont myBigFont = get(assetsPath + "fonts/simhei.ttf", BitmapFont.class);
+        // 设置字体支持Markup
+        myBigFont.getData().markupEnabled = true;
+
+        Gdx.app.log("Font","加载完成");
+
+        return myBigFont;
     }
 
-    @Override
-    public <T> T get(String fileName, Class<T> type, boolean required) {
-        return super.get(assetsPath + fileName, type, required);
-    }
-
-
-    @Override
-    public synchronized <T> void load (String fileName, Class<T> type){
-        super.load(assetsPath + fileName, type);
-    }
-
-    @Override
-    public synchronized <T> void load (String fileName, Class<T> type, AssetLoaderParameters<T> parameter){
-        super.load(assetsPath + fileName, type, parameter);
-    }
-
-    @Override
-    public synchronized boolean contains(String fileName) {
-        return super.contains(assetsPath + fileName);
-    }
-
-    @Override
-    public synchronized boolean isLoaded(String fileName) {
-        return super.isLoaded(assetsPath + fileName);
-    }
-
-    @Override
-    public synchronized void unload(String fileName) {
-        super.unload(assetsPath + fileName);
-    }
 }

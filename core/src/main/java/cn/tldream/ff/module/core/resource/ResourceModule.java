@@ -2,8 +2,9 @@ package cn.tldream.ff.module.core.resource;
 
 import cn.tldream.ff.module.GameModule;
 import cn.tldream.ff.module.Updatable;
+import com.badlogic.gdx.Gdx;
 
-public class ResourceModule implements GameModule, Updatable {
+public class ResourceModule implements GameModule {
     private final ResourceManager resourceManager;
 
     public ResourceModule(String assetsPath) {
@@ -21,12 +22,11 @@ public class ResourceModule implements GameModule, Updatable {
 
     @Override
     public void init() {
-
+        resourceManager.initialize();
     }
 
-    @Override
-    public void update(float deltaTime) {
-        resourceManager.update();
+    public boolean update(){
+        return resourceManager.update();
     }
 
     @Override

@@ -1,28 +1,33 @@
 package cn.tldream.ff.module.core.screen;
 
 import cn.tldream.ff.FightGame;
+import cn.tldream.ff.module.core.resource.ResourceManager;
+import cn.tldream.ff.module.core.resource.ResourceModule;
+import cn.tldream.ff.screen.*;
 import com.badlogic.gdx.utils.Disposable;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ScreenManager implements Disposable {
-    private final static ScreenManager instance = new ScreenManager();  // 单例
-    private static FightGame game;     // 游戏实例
-    private final Map<Class<?>, BaseScreen> screens;    // 屏幕列表
+    private final FightGame game;     // 游戏实例
+    private ResourceModule resource;
+    private final Map<Class<?>, BaseScreen> screens = new HashMap<>();  // 屏幕列表
     private Class<? extends BaseScreen> pendingScreen;  // 待切换的屏幕
 
     /*单例模式*/
-    private ScreenManager() {
-        this.screens = new HashMap<>();
+    public ScreenManager(FightGame game) {
+        this.game = game;
     }
 
-    public static void initialize(FightGame game) {
-        ScreenManager.game = game;
-    }
-
-    public static ScreenManager getInstance() {
-        return instance;
+    /*初始化引用*/
+    public void initialize(){
+        this.resource = this.game.getModuleManager().getModule( "resource",ResourceModule.class);
+        register(SplashScreen.class, new SplashScreen(game));
+        register(LoadingScreen.class, new LoadingScreen(game));
+        register(GameScreen.class, new GameScreen(game));
+        register(MainMenuScreen.class, new MainMenuScreen(game));
+        switchTo(SplashScreen.class);
     }
 
     /*注册屏幕*/
