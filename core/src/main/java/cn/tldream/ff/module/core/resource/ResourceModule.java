@@ -2,8 +2,16 @@ package cn.tldream.ff.module.core.resource;
 
 import cn.tldream.ff.module.GameModule;
 
+/**
+ * 资源管理器模块
+ * 核心模块中的核心模块，不依赖任何模块
+ * 持有资源管理类实例
+ * 资源管理类功能固定后，不再暴露资源管理类
+ * */
 public class ResourceModule implements GameModule {
     private final ResourceManager resourceManager;
+    private boolean isInitialized = false;
+    protected boolean enabled = true;
 
     public ResourceModule(String assetsPath) {
         resourceManager = new ResourceManager(assetsPath);
@@ -21,6 +29,7 @@ public class ResourceModule implements GameModule {
     @Override
     public void init() {
         resourceManager.initialize();
+        isInitialized = true;
     }
 
     public boolean update(){
@@ -30,5 +39,15 @@ public class ResourceModule implements GameModule {
     @Override
     public void dispose() {
         resourceManager.dispose();
+    }
+
+    @Override
+    public boolean isInitialized() {
+        return isInitialized;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 }

@@ -9,6 +9,12 @@ import com.badlogic.gdx.utils.Disposable;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * 屏幕管理类
+ * 预计未来依赖ui管理模块等
+ */
+
 public class ScreenManager implements Disposable {
     private final FightGame game;     // 游戏实例
     private final Map<Class<?>, BaseScreen> screens = new HashMap<>();  // 屏幕列表

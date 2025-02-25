@@ -5,9 +5,16 @@ import cn.tldream.ff.module.GameModule;
 import cn.tldream.ff.module.core.resource.ResourceManager;
 import cn.tldream.ff.module.core.resource.ResourceModule;
 
+
+/**
+ * 屏幕管理模块
+ *
+ * */
 public class ScreenModule implements GameModule {
     private final ScreenManager screenManager;
     private ResourceModule resourceModule;
+    private boolean isInitialized = false;
+    protected boolean enabled = true;
 
     public ScreenModule(FightGame game) {
         screenManager = new ScreenManager(game);
@@ -24,6 +31,8 @@ public class ScreenModule implements GameModule {
     @Override
     public String[] getDependencies() { return new String[] {"resource"}; } // 依赖模块
 
+
+    /*依赖注入*/
     @Override
     public void receiveDependency(String name, GameModule module) {
         if ("resource".equals(name)) {
@@ -31,13 +40,25 @@ public class ScreenModule implements GameModule {
         }
     }
 
+    /*初始化*/
     @Override
     public void init() {
         screenManager.initialize();
+        isInitialized = true;
     }
 
     @Override
     public void dispose() {
 
+    }
+
+    @Override
+    public boolean isInitialized() {
+        return isInitialized;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 }

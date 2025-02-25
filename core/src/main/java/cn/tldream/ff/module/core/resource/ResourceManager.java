@@ -12,6 +12,12 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 
+/**
+ * 资源管理类
+ * 继承AssetManager，实现加载资源路径的拼接
+ * 预计实现功能：异步加载资源组
+ *
+ * */
 public class ResourceManager extends AssetManager{
     private final String assetsPath;
     private FreetypeFontLoader.FreeTypeFontLoaderParameter parameter;
