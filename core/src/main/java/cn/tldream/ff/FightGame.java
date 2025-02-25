@@ -1,6 +1,7 @@
 package cn.tldream.ff;
 
 import cn.tldream.ff.module.core.ModuleManager;
+import cn.tldream.ff.module.core.config.ConfigModule;
 import cn.tldream.ff.module.core.resource.ResourceModule;
 import cn.tldream.ff.module.core.screen.ScreenModule;
 import com.badlogic.ashley.core.Engine;
@@ -18,6 +19,7 @@ public class FightGame extends Game {
         modules = new ModuleManager();
         // 注册模块
         modules.register("resource", new ResourceModule(assetsPath))
+            .register("config", ConfigModule.getInstance())
             .register("screen", new ScreenModule(this));
     }
 

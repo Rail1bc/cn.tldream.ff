@@ -1,8 +1,10 @@
 package cn.tldream.ff.module.core.resource;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.AbsoluteFileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -10,6 +12,8 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+
+import java.util.Properties;
 
 
 /**
@@ -21,9 +25,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 public class ResourceManager extends AssetManager{
     private final String assetsPath;
     private FreetypeFontLoader.FreeTypeFontLoaderParameter parameter;
+    private static AbsoluteFileHandleResolver resolver;
 
     public ResourceManager(String assetsPath) {
-        super(new AbsoluteFileHandleResolver() {
+        super(resolver = new AbsoluteFileHandleResolver() {
             @Override
             public FileHandle resolve(String fileName) {
                 // 统一在此处做单次路径拼接
@@ -38,8 +43,14 @@ public class ResourceManager extends AssetManager{
 
     /*初始化资源管理器*/
     public void initialize() {
+        setLoaders();
         loadAssets();
         freeTypeFontLoader();
+    }
+
+    /*设置加载器*/
+    private void setLoaders() {
+        setLoader(Properties.class, new PropertiesLoader(resolver));
     }
 
     /*强制加载核心资源*/
@@ -63,6 +74,7 @@ public class ResourceManager extends AssetManager{
         parameter.fontFileName = assetsPath + "fonts/simhei.ttf";
     }
 
+    /*获取字体*/
     public BitmapFont getFont(int size) {
         parameter.fontParameters.size = size;
 
@@ -78,5 +90,7 @@ public class ResourceManager extends AssetManager{
 
         return myBigFont;
     }
+
+    /*加载自定义加载器文件*/
 
 }

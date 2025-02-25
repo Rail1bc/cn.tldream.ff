@@ -11,7 +11,6 @@ import cn.tldream.ff.module.GameModule;
 public class ResourceModule implements GameModule {
     private final ResourceManager resourceManager;
     private boolean isInitialized = false;
-    protected boolean enabled = true;
 
     public ResourceModule(String assetsPath) {
         resourceManager = new ResourceManager(assetsPath);
@@ -44,10 +43,5 @@ public class ResourceModule implements GameModule {
     @Override
     public boolean isInitialized() {
         return isInitialized;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return enabled;
     }
 }

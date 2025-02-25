@@ -14,7 +14,6 @@ public class ScreenModule implements GameModule {
     private final ScreenManager screenManager;
     private ResourceModule resourceModule;
     private boolean isInitialized = false;
-    protected boolean enabled = true;
 
     public ScreenModule(FightGame game) {
         screenManager = new ScreenManager(game);
@@ -57,8 +56,4 @@ public class ScreenModule implements GameModule {
         return isInitialized;
     }
 
-    @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
 }
