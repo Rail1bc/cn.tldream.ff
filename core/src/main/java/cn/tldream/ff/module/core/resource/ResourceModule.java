@@ -10,7 +10,7 @@ public class ResourceModule implements GameModule, Updatable {
         resourceManager = new ResourceManager(assetsPath);
     }
 
-    // 暴露服务接口
+    /*暴露服务接口*/
     public ResourceManager getResourceManager() {
         return resourceManager;
     }

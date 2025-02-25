@@ -13,20 +13,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 
 public class ResourceManager extends AssetManager{
-    private final String assetsPath;
+    private final String assetsPath; // 资源目录路径
 
     public ResourceManager(String assetsPath) {
         this.assetsPath = assetsPath;
         initialize();
     }
 
-    // 初始化资源管理器
+    /*初始化资源管理器*/
     private void initialize() {
         loadAssets();
         freeTypeFontLoader();
     }
 
-    // 强制加载核心资源
+    /*强制加载核心资源*/
     private void loadAssets() {
 
         load("ui/uiskin.json",Skin.class);
@@ -36,14 +36,14 @@ public class ResourceManager extends AssetManager{
         finishLoading();
     }
 
-    // 设置FreeType 字体加载器
+    /*设置FreeType 字体加载器*/
     private void freeTypeFontLoader() {
         FileHandleResolver resolver = new InternalFileHandleResolver();
         setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
         setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
     }
 
-    // 重写父类方法，自动拼接资源路径
+    /*重写父类方法，自动拼接资源路径*/
     @Override
     public <T> T get(String fileName, Class<T> type) {
         return super.get(assetsPath + fileName, type);

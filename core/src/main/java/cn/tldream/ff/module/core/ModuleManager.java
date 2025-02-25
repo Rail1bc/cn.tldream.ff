@@ -8,19 +8,20 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ModuleManager {
     private static final Map<String, GameModule> modules = new ConcurrentHashMap<>(); // 模块图
 
-    // 注册模块
+    /*注册模块*/
     public ModuleManager register(String name, GameModule module) {
         modules.put(name, module);
         return this;
     }
 
-    // 获取模块
+    /*获取模块*/
     public static <T extends GameModule> T getModule(String name, Class<T> type) {
         GameModule module = modules.get(name);
         return type.cast(module);
     }
 
 
+    /*初始化全部模块*/
     public void initialize() {
         // 拓扑排序确保初始化顺序
         List<GameModule> sortedModules = topologicalSort();
@@ -30,11 +31,13 @@ public class ModuleManager {
         });
     }
 
+    /*释放全部模块*/
     public void dispose() {
         modules.values().forEach(GameModule::dispose);
     }
 
 
+    /*模块排序*/
     private List<GameModule> topologicalSort() {
         // 实现基于依赖关系的拓扑排序算法
         // 确保依赖模块先初始化
