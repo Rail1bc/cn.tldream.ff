@@ -2,20 +2,25 @@
   "texture" :{
     "logo": {
       "engine_logo": {
-        "path": "logos/libgdx.png"
+        "type": "texture",
+        "path": "logo/libgdx.png"
       },
       "tld_logo_p1": {
-        "path": "logos/tld_p1.png"
+        "type": "texture",
+        "path": "logo/tld_p1.png"
       },
       "tld_logo_p2": {
-        "path": "logos/tld_p2.png"
+        "type": "texture",
+        "path": "logo/tld_p2.png"
       }
     },
     "heightmap": {
       "heightmap": {
+        "type": "texture",
         "path": "map/heightmaps/heightmap.png"
       },
       "heightmap_mini": {
+        "type": "texture",
         "path": "map/heightmaps/heightmapMini.png"
       }
     }

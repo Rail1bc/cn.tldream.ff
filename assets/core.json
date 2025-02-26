@@ -1,0 +1,24 @@
+{
+  "config": {
+    "core": {
+      "overall": {
+        "type": "properties",
+        "path": "config/config.properties"
+      }
+    },
+    "resources": {
+      "font": {
+        "type": "json",
+        "path": "config/font.json"
+      },
+      "skin": {
+        "type": "json",
+        "path": "config/skin.json"
+      },
+      "texture": {
+        "type": "json",
+        "path": "config/texture.json"
+      }
+    }
+  }
+}

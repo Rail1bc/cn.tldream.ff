@@ -2,7 +2,8 @@
   "font": {
     "ttf": {
       "cn": {
-        "path": "fonts/cn.ttf"
+        "type": "font",
+        "path": "font/simhei.ttf"
       }
     }
   }

@@ -1,11 +1,13 @@
 package cn.tldream.ff.module.core;
 
 import cn.tldream.ff.module.GameModule;
+import com.badlogic.gdx.Gdx;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ModuleManager {
+    private final String className = "模块管理器";
     private static final Map<String, GameModule> modules = new ConcurrentHashMap<>(); // 模块图
     private List<GameModule> initializedModules;
     /*注册模块*/
@@ -27,13 +29,15 @@ public class ModuleManager {
 
     /*初始化全部模块*/
     public void initialize() {
+        Gdx.app.log(className, "初始化");
         // 拓扑排序确保初始化顺序
         initializedModules = topologicalSort();
         initializedModules.forEach(GameModule::init);
     }
 
-    /*释放全部模块*/
+    /*处置全部模块*/
     public void dispose() {
+        Gdx.app.log(className, "开始处置");
         List<GameModule> reverse = new ArrayList<>(initializedModules);
         Collections.reverse(reverse);
         reverse.forEach(GameModule::dispose);
@@ -43,6 +47,7 @@ public class ModuleManager {
 
     /*模块排序*/
     private List<GameModule> topologicalSort() {
+        Gdx.app.log(className, "依赖关系拓扑排序");
         // 实现基于依赖关系的拓扑排序算法
         // 确保依赖模块先初始化
         // 使用Kahn算法实现拓扑排序

@@ -2,6 +2,7 @@
   "skin": {
     "uiskin": {
       "default": {
+        "type": "skin",
         "path": "ui/uiskin.json"
       }
     }
