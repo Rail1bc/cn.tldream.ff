@@ -6,10 +6,24 @@ import com.badlogic.gdx.Gdx;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * 模块管理器
+ * 生命周期：
+ * 主类Create方法调用时，模块管理器实例化、初始化
+ * 主类销处置，模块管理器处置
+ * 工作内容：
+ * 管理全部模块生命周期，并且确保模块初始化顺序
+ * 工作流程：
+ * 在主类Create方法中注册模块
+ * 在主类调用初始化方法，模块初始化
+ * 初始化流程，首先进行排序，然后依赖注入
+ * 最后模块初始化
+ * */
 public class ModuleManager {
     private final String className = "模块管理器";
     private static final Map<String, GameModule> modules = new ConcurrentHashMap<>(); // 模块图
-    private List<GameModule> initializedModules;
+    private List<GameModule> initializedModules; // 模块拓扑排序列表
+
     /*注册模块*/
     public ModuleManager register(String name, GameModule module) {
         if (modules.containsKey(name)) {

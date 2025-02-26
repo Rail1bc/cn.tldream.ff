@@ -15,12 +15,7 @@ public class FightGame extends Game {
 
     public FightGame(String assetsPath) {
         this.assetsPath = assetsPath;
-        // 实例化模块管理器
-        modules = new ModuleManager();
-        // 注册模块
-        modules.register("resource", new ResourceModule(assetsPath))
-            .register("config", ConfigModule.getInstance())
-            .register("screen", new ScreenModule(this));
+
     }
 
     public ModuleManager getModuleManager() {
@@ -29,11 +24,15 @@ public class FightGame extends Game {
 
     @Override
     public void create() {
+        // 实例化模块管理器
+        modules = new ModuleManager();
+        // 注册模块
+        modules.register("resource", new ResourceModule(assetsPath))
+            .register("config", ConfigModule.getInstance())
+            .register("screen", new ScreenModule(this));
 
         // 初始化模块
         modules.initialize();
-
-
     }
 
     @Override

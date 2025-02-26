@@ -15,10 +15,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * 生命周期：单例模式
  * 模块管理器进行依赖排序时依赖注入
  * 在资源管理模块初始化后进行初始化
- * 模块初始化顺序：资源管理模块 -> 配置管理模块
  * 模块管理器销毁时统一销毁
- * 工作内容：加载配置文件，提供全局的访问接口
- * 工作流程：模块接受依赖注入后，创建配置管理器
+ * 工作内容：
+ * 加载配置文件、资源id与资源路径的映射关系
+ * 提供全局的访问接口
+ * 工作流程：
+ * 模块接受依赖注入后，创建配置管理器
  * 初始化配置管理器，设置模块初始化状态为true
  * */
 public class ConfigModule implements GameModule {
@@ -42,10 +44,8 @@ public class ConfigModule implements GameModule {
 
     /*获取idMap*/
     public Map<String, ResourceDescriptor> getIdMap() {
-        return configManager.idMap;
+        return configManager.getIdMap();
     }
-
-
 
     @Override
     public String[] getDependencies() {
@@ -66,7 +66,7 @@ public class ConfigModule implements GameModule {
         loadConfig(resourceModule.loadAndGet("vanilla:config.resources.texture")); // 读取纹理资源配置
 
 
-        for(Map.Entry<String , ResourceDescriptor> entry : configManager.idMap.entrySet()){
+        for(Map.Entry<String , ResourceDescriptor> entry : configManager.getIdMap().entrySet()){
             System.out.println(entry.getKey()+" "+entry.getValue().getPath() );
         }
     }

@@ -10,14 +10,15 @@ import com.badlogic.gdx.Gdx;
  * 依赖模块：配置管理模块
  * 生命周期：
  * 模块管理器初始化时，初始化资源管理模块
- * 持有资源管理类实例
- * 资源管理类功能固定后，不再暴露资源管理类
+ * 持有资源管理类实例,
+ * 工作内容：
+ *
  * */
 public class ResourceModule implements GameModule {
     private final String className = "资源管理模块";
-    private final ResourceManager resourceManager;
-    private ConfigModule configModule;
-    private boolean isInitialized = false;
+    private final ResourceManager resourceManager; //资源管理器
+    private ConfigModule configModule; // 配置管理模块
+    private boolean isInitialized = false; // 初始化状态
 
     public ResourceModule(String assetsPath) {
         resourceManager = new ResourceManager(assetsPath);
@@ -46,6 +47,7 @@ public class ResourceModule implements GameModule {
         return resourceManager.get(resd.getPath(),resd.getType());
     }
 
+    /*通过资源id，阻塞同步加载并获取资源*/
     public synchronized <T> T loadAndGet(String id){
         ResourceDescriptor resd = configModule.getResource(id);
         resourceManager.load(resd.getPath(),resd.getType());
@@ -64,6 +66,7 @@ public class ResourceModule implements GameModule {
     public int getInitPriority() { return 100; } // 最高优先级
 
 
+    /*初始化*/
     @Override
     public void init() {
         Gdx.app.log(className, "初始化");
@@ -71,10 +74,12 @@ public class ResourceModule implements GameModule {
         isInitialized = true;
     }
 
+    /*处置*/
     @Override
     public void dispose() {
         resourceManager.dispose();
     }
+
 
     @Override
     public boolean isInitialized() {

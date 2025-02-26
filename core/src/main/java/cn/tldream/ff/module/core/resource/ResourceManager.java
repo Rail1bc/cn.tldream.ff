@@ -2,7 +2,6 @@ package cn.tldream.ff.module.core.resource;
 
 import cn.tldream.ff.module.core.config.ConfigModule;
 import cn.tldream.ff.module.core.resource.descriptor.ResourceDescriptor;
-import cn.tldream.ff.module.core.resource.descriptor.ResourceType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
@@ -14,7 +13,6 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 
 import java.util.Map;
@@ -26,29 +24,37 @@ import java.util.concurrent.ConcurrentHashMap;
  * 资源管理器
  * 继承AssetManager，实现加载资源路径的拼接
  * 预计实现功能：异步加载资源组
+ * 生命周期：
+ * 资源管理模块实例化时实例化
+ * 资源管理模块初始化时初始化
+ * 资源管理模块处置时处置
  *
  * */
 public class ResourceManager extends AssetManager{
     private final String className = "资源管理器";
-    private final String assetsPath;
-    private final ConfigModule configModule = ConfigModule.getInstance();
-    private FreetypeFontLoader.FreeTypeFontLoaderParameter parameter;
-    private static AbsoluteFileHandleResolver resolver;
+    private final String assetsPath; // 资源目录路径
+    private final ConfigModule configModule = ConfigModule.getInstance(); // 配置管理模块
+    private FreetypeFontLoader.FreeTypeFontLoaderParameter parameter; // FreeType字体加载器参数
+    private static AbsoluteFileHandleResolver resolver; // 资源路径解析器
 
     public ResourceManager(String assetsPath) {
         super(resolver = new AbsoluteFileHandleResolver() {
+            // 重写路径解析器，拼接资源目录路径
             @Override
             public FileHandle resolve(String fileName) {
-                // 统一在此处做单次路径拼接
-                if (fileName.startsWith(assetsPath) || fileName.startsWith(assetsPath.replace('\\','/'))) {
-                    return super.resolve(fileName);
-                }
+                if (fileName.startsWith(assetsPath) || fileName.startsWith(assetsPath.replace('\\','/'))) return super.resolve(fileName);
                 else return super.resolve(assetsPath + fileName);
             }
         });
         this.assetsPath = assetsPath;
         setLoaders();
         freeTypeFontLoader();
+    }
+
+    /*根据id，将资源加入加载队列*/
+    public void load(String id){
+        ResourceDescriptor resd = configModule.getResource(id);
+        load(resd.getPath(),resd.getType());
     }
 
     /*初始化资源管理器*/
@@ -65,14 +71,11 @@ public class ResourceManager extends AssetManager{
 
     /*强制加载核心资源*/
     private void loadAssets() {
-        Gdx.app.log(className, "强制加载核心资产");
-        ResourceDescriptor resd = configModule.getResource("vanilla:texture.logo.engine_logo");
-        this.load("ui/uiskin.json", Skin.class);
-        load(resd.getPath(), resd.getType());
-        load("logo/tld_p1.png",Texture.class);
-        load("logo/tld_p2.png",Texture.class);
+        load("vanilla:skin.uiskin.default");
+        load("vanilla:texture.logo.engine_logo");
+        load("vanilla:texture.logo.tld_p1");
+        load("vanilla:texture.logo.tld_p2");
         finishLoading();
-        Gdx.app.log(className, "核心资产加载完成");
     }
 
     /*设置FreeType 字体加载器*/

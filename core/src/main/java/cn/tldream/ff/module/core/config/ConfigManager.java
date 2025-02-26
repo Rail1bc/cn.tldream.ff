@@ -13,10 +13,21 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 配置管理器
  * 依赖模块：资源管理器
+ * 生命周期：
+ * 模块依赖注入时进行实例化
+ * 模块初始化时进行初始化
+ * 模块处置时进行处置
+ * 工作内容：
+ * 读取配置文件、资源配置文件
+ * 提供全局访问
+ * 工作流程：
+ * 实例化时，创建idMap，并注入核心配置文件相对路径
+ * 初始化时，暂时没有工作
+ *
  * */
 public class ConfigManager implements Disposable {
     private final String className = "配置管理器";
-    public final Map<String, ResourceDescriptor> idMap = new ConcurrentHashMap<>(); // id与资源描述符的映射
+    private final Map<String, ResourceDescriptor> idMap = new ConcurrentHashMap<>(); // id与资源描述符的映射
     private final ResourceModule resourceModule;
 
     /*构造函数*/
@@ -57,6 +68,10 @@ public class ConfigManager implements Disposable {
         loadConfig("vanilla:", json.child);
     }
 
+    public Map<String, ResourceDescriptor> getIdMap() {
+        return idMap;
+    }
+
     @Override
     public void dispose() {
         saveConfig();
@@ -68,7 +83,6 @@ public class ConfigManager implements Disposable {
             if(json.next != null) loadConfig(id , json.next);
         }
         else loadConfig(id + json.name() + ".", json.child);
-
         if(json.next() != null) loadConfig(id , json.next);
     }
 
