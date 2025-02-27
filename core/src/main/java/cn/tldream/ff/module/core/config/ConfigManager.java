@@ -27,7 +27,7 @@ import java.util.Map;
 public class ConfigManager implements Disposable{
     private final String className = "配置管理器";
     private final Map<String, ResourceDescriptor> idMap; // id与资源描述符的映射
-    private ResourceModule resourceModule;
+    private ResourceModule resourceModule; // 资源管理模块实例
 
 
     /*实例化*/
@@ -55,8 +55,7 @@ public class ConfigManager implements Disposable{
 
     /*主初始化*/
     public void init() {
-        Gdx.app.log(className, "主初始化");
-
+        Gdx.app.debug(className, "主初始化");
     }
 
 

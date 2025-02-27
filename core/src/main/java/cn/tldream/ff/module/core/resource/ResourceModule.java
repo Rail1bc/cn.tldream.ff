@@ -60,7 +60,7 @@ public class ResourceModule implements GameModule {
 
     /*更新，继续加载*/
     public boolean update(){
-        Gdx.app.log(className, "更新");
+        Gdx.app.debug(className, "更新");
         return resourceManager.update();
     }
 
@@ -73,18 +73,18 @@ public class ResourceModule implements GameModule {
 
     @Override
     public void preInit(){
-        Gdx.app.log(className, "预初始化");
+        Gdx.app.debug(className, "预初始化");
     }
 
     @Override
     public void init() {
-        Gdx.app.log(className, "主初始化");
+        Gdx.app.debug(className, "主初始化");
         resourceManager.init();
     }
 
     @Override
     public void postInit() {
-        Gdx.app.log(className, "后初始化");
+        Gdx.app.debug(className, "后初始化");
         isInitialized = true;
     }
 

@@ -69,7 +69,7 @@ public class ResourceManager extends AssetManager{
 
     /*主初始化*/
     public void init() {
-        Gdx.app.log(className, "主初始化");
+        Gdx.app.debug(className, "主初始化");
         loadAssets();
         freeTypeFontLoader();
     }
@@ -96,7 +96,7 @@ public class ResourceManager extends AssetManager{
 
     /*获取字体*/
     public BitmapFont getFont(int size) {
-        Gdx.app.log(className, "获取字体");
+        Gdx.app.debug(className, "获取字体");
         parameter.fontParameters.size = size;
 
         // 加载字体

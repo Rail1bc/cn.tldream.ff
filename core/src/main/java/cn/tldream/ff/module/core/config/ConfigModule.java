@@ -37,7 +37,7 @@ public class ConfigModule implements GameModule {
     }
 
     private ConfigModule() {
-        Gdx.app.log(className, "实例化");
+        Gdx.app.debug(className, "实例化");
     }
 
     /*暴露服务接口*/
@@ -61,14 +61,14 @@ public class ConfigModule implements GameModule {
     /*预初始化*/
     @Override
     public void preInit() {
-        Gdx.app.log(className, "预初始化");
+        Gdx.app.debug(className, "预初始化");
         configManager.preInit();
     }
 
     /*主初始化*/
     @Override
     public void init() {
-        Gdx.app.log(className, "主初始化");
+        Gdx.app.debug(className, "主初始化");
         configManager.init(); // 初始化配置管理器
 
         initialized = true; // 设置模块初始化状态为true

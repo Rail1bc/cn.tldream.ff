@@ -5,7 +5,9 @@ import cn.tldream.ff.module.core.config.ConfigModule;
 import cn.tldream.ff.module.core.resource.ResourceModule;
 import cn.tldream.ff.module.core.screen.ScreenModule;
 import com.badlogic.ashley.core.Engine;
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 
 /** {@link Game} implementation shared by all platforms. */
 public class FightGame extends Game {
@@ -21,6 +23,7 @@ public class FightGame extends Game {
 
     @Override
     public void create() {
+        Gdx.app.setLogLevel(Application.LOG_DEBUG); // 设置日志级别为调试级别
         // 注册模块
         modules
             .register("config", ConfigModule.getInstance())
