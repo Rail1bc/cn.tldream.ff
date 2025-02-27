@@ -8,14 +8,18 @@ import com.badlogic.gdx.Gdx;
 /**
  * 资源管理模块
  * 依赖模块：配置管理模块
- * 生命周期：
- * 实例化
- * 依赖注入
- * 预初始化
- * 主初始化
- * 后初始化
+ * 生命周期：由主类实例化，并注册进模块管理器
+ * 实例化 由主类进行
+ * 依赖注入 |预初始化 |主初始化 |处置
+ * 模块管理器统一进行管理
  * 工作内容：
- *
+ * 提供异步加载资源的功能
+ * 可查看加载进度
+ * 可同步加载
+ * 工作流程：
+ * 调用 load()方法，通过id 获取资源描述，再通过资源管理器加载资源
+ * 调用 finishLoading()方法，阻塞等待加载完成
+ * 调用 get()方法，获取资源
  * */
 public class ResourceModule implements GameModule {
     private final String className = "资源管理模块";
@@ -67,6 +71,11 @@ public class ResourceModule implements GameModule {
     @Override
     public String[] getDependencies() {
         return new String[]{"config"}; // 依赖配置管理模块
+    }
+
+    @Override
+    public void receiveDependency() {
+        resourceManager.setConfigModule(configModule);
     }
 
     /*初始化*/

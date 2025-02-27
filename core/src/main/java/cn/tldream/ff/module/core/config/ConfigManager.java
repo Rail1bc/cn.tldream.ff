@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * 配置管理器
  * 依赖模块：无显式依赖，实际依赖实例化后的资源管理模块
- * 生命周期：资源管理模块实例化并管理
+ * 生命周期：由配置管理模块实例化并管理
  * 实例化 模块实例化时进行
  * 依赖注入 模块依赖注入时进行
  * 预初始化 模块预初始化时进行  过程依赖实例化后的资源管理模块
@@ -39,7 +39,7 @@ public class ConfigManager implements Disposable{
     * 由配置管理模块调用
     * */
 
-    /*实例化*/
+    /*构造函数*/
     public ConfigManager(Map<String, ResourceDescriptor> idMap) {
         Gdx.app.log(className, "实例化");
         this.idMap = idMap; // 注入idMap
