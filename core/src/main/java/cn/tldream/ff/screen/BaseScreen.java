@@ -17,8 +17,8 @@ public abstract class BaseScreen implements Screen {
     public BaseScreen(FightGame game) {
         stage = new Stage();
         this.game = game;
-        screenModule = game.getModuleManager().getModule("screen", ScreenModule.class);
-        resourceModule = game.getModuleManager().getModule("resource", ResourceModule.class);
+        screenModule = ModuleManager.getModule("screen", ScreenModule.class);
+        resourceModule = ModuleManager.getModule("resource", ResourceModule.class);
     }
 
     public abstract void loadAssets();

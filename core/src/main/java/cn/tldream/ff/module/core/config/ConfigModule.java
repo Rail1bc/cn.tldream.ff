@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.JsonValue;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 配置管理模块
@@ -25,8 +26,9 @@ import java.util.Map;
  * */
 public class ConfigModule implements GameModule {
     private static final String className = "配置管理模块";
+    private static final Map<String, ResourceDescriptor> idMap = new ConcurrentHashMap<>(); // id与资源描述符的映射
     private static final ConfigModule instance = new ConfigModule(); // 单例
-    private static final ConfigManager configManager = new ConfigManager();; // 配置管理器
+    private static final ConfigManager configManager = new ConfigManager(idMap);; // 配置管理器
     private static ResourceModule resourceModule; // 资源管理模块
     private static boolean initialized = false; // 模块初始化状态
 
@@ -40,12 +42,13 @@ public class ConfigModule implements GameModule {
 
     /*暴露服务接口*/
     public ResourceDescriptor getResource(String id) {
-        return configManager.getResource(id);
+        if(idMap.containsKey(id)) return idMap.get(id);
+        return null;
     }
 
     /*获取idMap*/
     public Map<String, ResourceDescriptor> getIdMap() {
-        return configManager.getIdMap();
+        return idMap;
     }
 
     /*依赖注入*/

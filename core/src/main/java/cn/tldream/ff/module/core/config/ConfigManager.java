@@ -7,7 +7,6 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.JsonValue;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -27,13 +26,14 @@ import java.util.concurrent.ConcurrentHashMap;
  * */
 public class ConfigManager implements Disposable{
     private final String className = "配置管理器";
-    private final Map<String, ResourceDescriptor> idMap = new ConcurrentHashMap<>(); // id与资源描述符的映射
+    private final Map<String, ResourceDescriptor> idMap; // id与资源描述符的映射
     private ResourceModule resourceModule;
 
 
     /*实例化*/
-    public ConfigManager() {
+    public ConfigManager(Map<String, ResourceDescriptor> idMap) {
         Gdx.app.log(className, "实例化");
+        this.idMap = idMap;
         idMap.put("vanilla:core", new JsonDes("core.json")); // 配置文件，全局唯一硬编码的相对路径
     }
 
@@ -61,6 +61,40 @@ public class ConfigManager implements Disposable{
 
 
 
+    @Override
+    public void dispose() {
+        saveConfig();
+    }
+
+    /*加载Json文件*/
+    public void loadConfig(JsonValue json) {
+        loadConfig("vanilla:", json.child); // 自动递归加载子节点，命名空间为原版
+    }
+
+
+    /*地洞递归拼接节点名，加载配置文件*/
+    private void loadConfig(String id, JsonValue json){
+        if(json.has("path")){
+            idMap.put(id + json.name(), createResourceDescriptor(json));
+            if(json.next != null) loadConfig(id , json.next);
+        }
+        else loadConfig(id + json.name() + ".", json.child);
+        if(json.next() != null) loadConfig(id , json.next);
+    }
+
+    /*根据JsonValue中的type字段创建对应的ResourceDescriptor*/
+    private static ResourceDescriptor createResourceDescriptor(JsonValue json){
+        return switch (json.getString("type")) {
+            case "json" -> new JsonDes(json.getString("path"));
+            case "properties" -> new PropertiesDes(json.getString("path"));
+            case "skin" -> new SkinDes(json.getString("path"));
+            case "texture" -> new TextureDes(json.getString("path"));
+            case "font" -> new FontDes(json.getString("path"));
+            default -> null;
+        };
+    }
+
+
     /*保存配置文件*/
     public void saveConfig() {
         /*FileHandle config = resourceModule.getResourceManager().getFileHandle("config/config.properties");
@@ -76,44 +110,4 @@ public class ConfigManager implements Disposable{
         config.writeString(content.toString(), false);*/
     }
 
-    /*获取路径*/
-    public ResourceDescriptor getResource(String id) {
-        if(idMap.containsKey(id)) return idMap.get(id);
-        return null;
-    }
-
-    /*加载Json文件*/
-    public void loadConfig(JsonValue json) {
-        loadConfig("vanilla:", json.child);
-    }
-
-    public Map<String, ResourceDescriptor> getIdMap() {
-        return idMap;
-    }
-
-    @Override
-    public void dispose() {
-        saveConfig();
-    }
-
-    public void loadConfig(String id, JsonValue json){
-        if(json.has("path")){
-            idMap.put(id + json.name(), createResourceDescriptor(json));
-            if(json.next != null) loadConfig(id , json.next);
-        }
-        else loadConfig(id + json.name() + ".", json.child);
-        if(json.next() != null) loadConfig(id , json.next);
-    }
-
-    /*根据JsonValue中的type字段创建对应的ResourceDescriptor*/
-    public static ResourceDescriptor createResourceDescriptor(JsonValue json){
-        return switch (json.getString("type")) {
-            case "json" -> new JsonDes(json.getString("path"));
-            case "properties" -> new PropertiesDes(json.getString("path"));
-            case "skin" -> new SkinDes(json.getString("path"));
-            case "texture" -> new TextureDes(json.getString("path"));
-            case "font" -> new FontDes(json.getString("path"));
-            default -> null;
-        };
-    }
 }

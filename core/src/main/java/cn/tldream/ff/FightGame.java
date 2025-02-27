@@ -9,23 +9,18 @@ import com.badlogic.gdx.Game;
 
 /** {@link Game} implementation shared by all platforms. */
 public class FightGame extends Game {
-    private Engine engine;
-    private ModuleManager modules;
-    private String assetsPath;
+    private Engine engine; // ashley
+    private final ModuleManager modules; // 模块管理器
+    private final String assetsPath; //资源目录路径
 
     public FightGame(String assetsPath) {
-        this.assetsPath = assetsPath;
+        this.assetsPath = assetsPath; // 设置资源路径
 
-    }
-
-    public ModuleManager getModuleManager() {
-        return modules;
+        this.modules = ModuleManager.getInstance(); // 获取模块管理器实例
     }
 
     @Override
     public void create() {
-        // 获取模块管理器实例
-        modules = ModuleManager.getInstance();
         // 注册模块
         modules
             .register("config", ConfigModule.getInstance())
@@ -44,7 +39,6 @@ public class FightGame extends Game {
     @Override
     public void dispose() {
         modules.dispose();
+        super.dispose();
     }
-
-
 }
