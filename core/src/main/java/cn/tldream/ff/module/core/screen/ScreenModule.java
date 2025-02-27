@@ -2,6 +2,7 @@ package cn.tldream.ff.module.core.screen;
 
 import cn.tldream.ff.FightGame;
 import cn.tldream.ff.module.GameModule;
+import cn.tldream.ff.module.core.ModuleManager;
 import cn.tldream.ff.module.core.resource.ResourceManager;
 import cn.tldream.ff.module.core.resource.ResourceModule;
 
@@ -33,10 +34,8 @@ public class ScreenModule implements GameModule {
 
     /*依赖注入*/
     @Override
-    public void receiveDependency(String name, GameModule module) {
-        if ("resource".equals(name)) {
-            this.resourceModule = (ResourceModule) module;
-        }
+    public void receiveDependency() {
+        this.resourceModule = ModuleManager.getModule("resource", ResourceModule.class);
     }
 
     /*初始化*/

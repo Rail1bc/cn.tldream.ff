@@ -7,12 +7,10 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.AbsoluteFileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.JsonValue;
 
 import java.util.Map;
@@ -33,7 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ResourceManager extends AssetManager{
     private final String className = "资源管理器";
     private final String assetsPath; // 资源目录路径
-    private final ConfigModule configModule = ConfigModule.getInstance(); // 配置管理模块
+    private final ConfigModule configModule = ConfigModule.getInstance();
     private FreetypeFontLoader.FreeTypeFontLoaderParameter parameter; // FreeType字体加载器参数
     private static AbsoluteFileHandleResolver resolver; // 资源路径解析器
 
@@ -48,7 +46,12 @@ public class ResourceManager extends AssetManager{
         });
         this.assetsPath = assetsPath;
         setLoaders();
-        freeTypeFontLoader();
+    }
+
+    /*设置自定义加载器*/
+    private void setLoaders() {
+        setLoader(Properties.class, new PropertiesLoader(resolver));
+        setLoader(JsonValue.class, new JsonValueLoader(resolver));
     }
 
     /*根据id，将资源加入加载队列*/
@@ -57,16 +60,18 @@ public class ResourceManager extends AssetManager{
         load(resd.getPath(),resd.getType());
     }
 
-    /*初始化资源管理器*/
-    public void initialize() {
-        Gdx.app.log(className, "初始化");
-        loadAssets();
+
+    /*预初始化*/
+    public void preInit(){
+
     }
 
-    /*设置自定义加载器*/
-    private void setLoaders() {
-        setLoader(Properties.class, new PropertiesLoader(resolver));
-        setLoader(JsonValue.class, new JsonValueLoader(resolver));
+
+    /*主初始化*/
+    public void init() {
+        Gdx.app.log(className, "主初始化");
+        loadAssets();
+        freeTypeFontLoader();
     }
 
     /*强制加载核心资源*/

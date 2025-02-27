@@ -24,11 +24,12 @@ public class FightGame extends Game {
 
     @Override
     public void create() {
-        // 实例化模块管理器
-        modules = new ModuleManager();
+        // 获取模块管理器实例
+        modules = ModuleManager.getInstance();
         // 注册模块
-        modules.register("resource", new ResourceModule(assetsPath))
+        modules
             .register("config", ConfigModule.getInstance())
+            .register("resource", new ResourceModule(assetsPath))
             .register("screen", new ScreenModule(this));
 
         // 初始化模块

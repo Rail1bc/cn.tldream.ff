@@ -20,9 +20,14 @@ import java.util.concurrent.ConcurrentHashMap;
  * 最后模块初始化
  * */
 public class ModuleManager {
-    private final String className = "模块管理器";
+    private static final ModuleManager instance = new ModuleManager();
+    private static final String className = "模块管理器";
     private static final Map<String, GameModule> modules = new ConcurrentHashMap<>(); // 模块图
-    private List<GameModule> initializedModules; // 模块拓扑排序列表
+    private static List<GameModule> initializedModules; // 模块拓扑排序列表
+
+    public static ModuleManager getInstance() {
+        return instance;
+    }
 
     /*注册模块*/
     public ModuleManager register(String name, GameModule module) {
@@ -34,7 +39,7 @@ public class ModuleManager {
     }
 
     /*获取模块*/
-    public <T extends GameModule>  T getModule(String name, Class<T> type) {
+    public static <T extends GameModule>  T getModule(String name, Class<T> type) {
         return Optional.ofNullable(modules.get(name))
             .filter(type::isInstance)
             .map(type::cast).orElseThrow();
@@ -44,10 +49,13 @@ public class ModuleManager {
     /*初始化全部模块*/
     public void initialize() {
         Gdx.app.log(className, "初始化");
-        // 拓扑排序确保初始化顺序
         initializedModules = topologicalSort();
+        initializedModules.forEach(GameModule::receiveDependency);
+        initializedModules.forEach(GameModule::preInit);
         initializedModules.forEach(GameModule::init);
+        initializedModules.forEach(GameModule::postInit);
     }
+
 
     /*处置全部模块*/
     public void dispose() {
@@ -99,7 +107,7 @@ public class ModuleManager {
 
             // 注入依赖
             for (String dep : module.getDependencies()) {
-                module.receiveDependency(dep, modules.get(dep));
+
             }
 
             sorted.add(module);

@@ -25,22 +25,41 @@ import java.util.concurrent.ConcurrentHashMap;
  * 初始化时，暂时没有工作
  *
  * */
-public class ConfigManager implements Disposable {
+public class ConfigManager implements Disposable{
     private final String className = "配置管理器";
     private final Map<String, ResourceDescriptor> idMap = new ConcurrentHashMap<>(); // id与资源描述符的映射
-    private final ResourceModule resourceModule;
+    private ResourceModule resourceModule;
 
-    /*构造函数*/
-    public ConfigManager(ResourceModule resourceModule) {
+
+    /*实例化*/
+    public ConfigManager() {
         Gdx.app.log(className, "实例化");
         idMap.put("vanilla:core", new JsonDes("core.json")); // 配置文件，全局唯一硬编码的相对路径
-        this.resourceModule = resourceModule; // 依赖注入
     }
 
-    /*读取配置文件*/
-    public void init() {
-        Gdx.app.log(className, "初始化");
+    /*依赖注入*/
+    public void setResourceModule(ResourceModule resourceModule) {
+        this.resourceModule = resourceModule;
     }
+
+    /*预初始化*/
+    public void preInit() {
+        Gdx.app.log(className, "预初始化");
+        loadConfig(resourceModule.loadAndGet("vanilla:core")); // 读取核心配置
+
+        loadConfig(resourceModule.loadAndGet("vanilla:config.resources.font")); // 读取字体资源配置
+        loadConfig(resourceModule.loadAndGet("vanilla:config.resources.skin")); // 读取皮肤资源配置
+        loadConfig(resourceModule.loadAndGet("vanilla:config.resources.texture")); // 读取纹理资源配置
+
+    }
+
+    /*主初始化*/
+    public void init() {
+        Gdx.app.log(className, "主初始化");
+
+    }
+
+
 
     /*保存配置文件*/
     public void saveConfig() {
@@ -58,7 +77,7 @@ public class ConfigManager implements Disposable {
     }
 
     /*获取路径*/
-    public ResourceDescriptor getRes(String id){
+    public ResourceDescriptor getResource(String id) {
         if(idMap.containsKey(id)) return idMap.get(id);
         return null;
     }

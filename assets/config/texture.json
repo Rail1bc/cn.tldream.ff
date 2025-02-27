@@ -5,11 +5,11 @@
         "type": "texture",
         "path": "logo/libgdx.png"
       },
-      "tld_logo_p1": {
+      "tld_p1": {
         "type": "texture",
         "path": "logo/tld_p1.png"
       },
-      "tld_logo_p2": {
+      "tld_p2": {
         "type": "texture",
         "path": "logo/tld_p2.png"
       }
