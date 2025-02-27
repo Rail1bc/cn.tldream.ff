@@ -82,7 +82,8 @@ public class MainMenuScreen extends BaseScreen {
 
     private void addButton(Table table, String text, Runnable action) {
         // 手动创建按钮
-        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(resourceModule.getResourceManager().get("ui/uiskin.json", Skin.class).get(TextButton.TextButtonStyle.class));
+        Skin skin = resourceModule.get("vanilla:skin.uiskin.default");
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(skin.get(TextButton.TextButtonStyle.class));
 
 
 

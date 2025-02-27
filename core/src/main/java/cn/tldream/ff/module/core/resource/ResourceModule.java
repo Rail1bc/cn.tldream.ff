@@ -27,13 +27,61 @@ public class ResourceModule implements GameModule {
     private final ConfigModule configModule = ConfigModule.getInstance(); // 配置管理模块
     private boolean isInitialized = false; // 初始化状态
 
-    public ResourceModule(String assetsPath) {
-        resourceManager = new ResourceManager(assetsPath);
-    }
+    /*
+     * 生命周期方法
+     * 由模块管理器调用
+     * */
 
-    /*暴露服务接口*/
+    /*构造函数*/
     public ResourceManager getResourceManager() {
         return resourceManager;
+    }
+
+    /*获取依赖*/
+    @Override
+    public String[] getDependencies() {
+        return new String[]{"config"}; // 依赖配置管理模块
+    }
+
+    /*依赖注入*/
+    @Override
+    public void receiveDependency() {
+        resourceManager.setConfigModule(configModule);
+    }
+
+    /*预初始化*/
+    @Override
+    public void preInit(){
+        Gdx.app.debug(className, "预初始化");
+    }
+
+    /*主初始化*/
+    @Override
+    public void init() {
+        Gdx.app.debug(className, "主初始化");
+        resourceManager.init();
+    }
+
+    /*处置*/
+    @Override
+    public void dispose() {
+        resourceManager.dispose();
+    }
+
+
+    @Override
+    public boolean isInitialized() {
+        return isInitialized;
+    }
+
+
+    /*
+     * 暴露服务接口
+     * */
+
+    /*构造函数*/
+    public ResourceModule(String assetsPath) {
+        resourceManager = new ResourceManager(assetsPath);
     }
 
     /*同步加载，阻塞*/
@@ -42,7 +90,7 @@ public class ResourceModule implements GameModule {
     }
 
     /*通过资源id，将资源加入加载队列*/
-    public <T> void load(String id){
+    public void load(String id){
         ResourceDescriptor resd = configModule.getResource(id);
         resourceManager.load(resd.getPath(),resd.getType());
     }
@@ -50,7 +98,7 @@ public class ResourceModule implements GameModule {
     /*通过资源id，获取资源*/
     public synchronized <T> T get (String id) {
         ResourceDescriptor resd = configModule.getResource(id);
-        return resourceManager.get(resd.getPath(),resd.getType());
+        return resourceManager.get(resd.getPath(),resd.getType()) ;
     }
 
     /*通过资源id，阻塞同步加载并获取资源*/
@@ -68,44 +116,6 @@ public class ResourceModule implements GameModule {
         return resourceManager.update();
     }
 
-    @Override
-    public String[] getDependencies() {
-        return new String[]{"config"}; // 依赖配置管理模块
-    }
-
-    @Override
-    public void receiveDependency() {
-        resourceManager.setConfigModule(configModule);
-    }
-
-    /*初始化*/
-
-    @Override
-    public void preInit(){
-        Gdx.app.debug(className, "预初始化");
-    }
-
-    @Override
-    public void init() {
-        Gdx.app.debug(className, "主初始化");
-        resourceManager.init();
-    }
-
-    @Override
-    public void postInit() {
-        Gdx.app.debug(className, "后初始化");
-        isInitialized = true;
-    }
-
-    /*处置*/
-    @Override
-    public void dispose() {
-        resourceManager.dispose();
-    }
 
 
-    @Override
-    public boolean isInitialized() {
-        return isInitialized;
-    }
 }
