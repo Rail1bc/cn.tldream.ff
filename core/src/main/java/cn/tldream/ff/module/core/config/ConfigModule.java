@@ -33,23 +33,36 @@ public class ConfigModule implements GameModule {
     private static ResourceModule resourceModule; // 资源管理模块
     private static boolean initialized = false; // 模块初始化状态
 
-    /*单例模式*/
-    /*获取单例*/
-    public static ConfigModule getInstance() {
-        return instance;
-    }
+    /*
+    * 单例模式
+    * */
 
     /*私有构造函数*/
     private ConfigModule() {
         Gdx.app.debug(className, "实例化");
     }
 
-    /*暴露服务接口*/
+    /*获取单例*/
+    public static ConfigModule getInstance() {
+        return instance;
+    }
+
+
+    /*
+    * 暴露服务接口
+    * */
+
     /*根据id获取资源描述符*/
     public ResourceDescriptor getResource(String id) {
         if(idMap.containsKey(id)) return idMap.get(id);
         return null;
     }
+
+
+    /*
+     * 生命周期方法
+     * 由模块管理器调用
+     * */
 
     /*依赖注入*/
     @Override

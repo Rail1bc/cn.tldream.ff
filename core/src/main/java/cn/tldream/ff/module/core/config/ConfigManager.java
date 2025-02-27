@@ -34,6 +34,11 @@ public class ConfigManager implements Disposable{
     private ResourceModule resourceModule; // 资源管理模块实例
 
 
+    /*
+    * 生命周期方法
+    * 由配置管理模块调用
+    * */
+
     /*实例化*/
     public ConfigManager(Map<String, ResourceDescriptor> idMap) {
         Gdx.app.log(className, "实例化");
@@ -50,11 +55,9 @@ public class ConfigManager implements Disposable{
     public void preInit() {
         Gdx.app.log(className, "预初始化");
         loadConfig(resourceModule.loadAndGet("vanilla:core")); // 读取核心配置
-
         loadConfig(resourceModule.loadAndGet("vanilla:config.resources.font")); // 读取字体资源配置
         loadConfig(resourceModule.loadAndGet("vanilla:config.resources.skin")); // 读取皮肤资源配置
         loadConfig(resourceModule.loadAndGet("vanilla:config.resources.texture")); // 读取纹理资源配置
-
     }
 
     /*主初始化*/
@@ -69,8 +72,12 @@ public class ConfigManager implements Disposable{
     }
 
 
+    /*
+     * 私有功能方法
+     * */
+
     /*加载Json文件*/
-    public void loadConfig(JsonValue json) {
+    private void loadConfig(JsonValue json) {
         loadConfig("vanilla:", json.child); // 自动递归加载子节点，命名空间为原版
     }
 
@@ -95,7 +102,6 @@ public class ConfigManager implements Disposable{
             default -> null;
         };
     }
-
 
     /*保存配置文件*/
     private void saveConfig() {
