@@ -11,17 +11,21 @@ import java.util.Map;
 
 /**
  * 配置管理器
- * 依赖模块：资源管理器
- * 生命周期：
- * 模块依赖注入时进行实例化
- * 模块初始化时进行初始化
- * 模块处置时进行处置
+ * 依赖模块：无显式依赖，实际依赖实例化后的资源管理模块
+ * 生命周期：资源管理模块实例化并管理
+ * 实例化 模块实例化时进行
+ * 依赖注入 模块依赖注入时进行
+ * 预初始化 模块预初始化时进行  过程依赖实例化后的资源管理模块
+ * 主初始化 模块主初始化时进行
+ * 处置 模块处置时进行
  * 工作内容：
  * 读取配置文件、资源配置文件
- * 提供全局访问
+ * 解析文件，维护资源id与资源描述符的映射关系
  * 工作流程：
- * 实例化时，创建idMap，并注入核心配置文件相对路径
- * 初始化时，暂时没有工作
+ * 实例化时，获取idMap引用，并注入核心配置文件相对路径
+ * 依赖注入时，获取实例化后的资源管理模块实例
+ * 预初始化时，通过获取的资源管理模块实例读取核心配置文件
+ * 加载配置文件、资源配置文件，并维护资源id与资源描述符的映射关系
  *
  * */
 public class ConfigManager implements Disposable{
@@ -33,13 +37,13 @@ public class ConfigManager implements Disposable{
     /*实例化*/
     public ConfigManager(Map<String, ResourceDescriptor> idMap) {
         Gdx.app.log(className, "实例化");
-        this.idMap = idMap;
+        this.idMap = idMap; // 注入idMap
         idMap.put("vanilla:core", new JsonDes("core.json")); // 配置文件，全局唯一硬编码的相对路径
     }
 
     /*依赖注入*/
     public void setResourceModule(ResourceModule resourceModule) {
-        this.resourceModule = resourceModule;
+        this.resourceModule = resourceModule; // 注入资源管理模块实例
     }
 
     /*预初始化*/
@@ -58,18 +62,17 @@ public class ConfigManager implements Disposable{
         Gdx.app.debug(className, "主初始化");
     }
 
-
-
+    /*处置*/
     @Override
     public void dispose() {
         saveConfig();
     }
 
+
     /*加载Json文件*/
     public void loadConfig(JsonValue json) {
         loadConfig("vanilla:", json.child); // 自动递归加载子节点，命名空间为原版
     }
-
 
     /*地洞递归拼接节点名，加载配置文件*/
     private void loadConfig(String id, JsonValue json){
@@ -95,7 +98,7 @@ public class ConfigManager implements Disposable{
 
 
     /*保存配置文件*/
-    public void saveConfig() {
+    private void saveConfig() {
         /*FileHandle config = resourceModule.getResourceManager().getFileHandle("config/config.properties");
 
         Properties properties = resourceModule.getResourceManager().get("config/config.properties", Properties.class);
