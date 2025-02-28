@@ -13,9 +13,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.utils.JsonValue;
 
-import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 /*
@@ -115,22 +113,6 @@ public class ResourceManager extends AssetManager{
     public void load(String id){
         ResourceDescriptor resd = configModule.getResource(id);
         load(resd.getPath(),resd.getType());
-    }
-
-    /*批量加载资源*/
-    public <T> void loadAssets(Map<String,Class<T>> assetsMap){
-        for(Map.Entry<String,Class<T>> entry : assetsMap.entrySet()){
-            load(entry.getKey(),entry.getValue());
-        }
-    }
-
-    /*批量获取资源*/
-    public <T> Map<String,T> getAssets(Map<String,Class<T>> assetsMap){
-        Map<String,T> assets = new ConcurrentHashMap<>();
-        for(Map.Entry<String,Class<T>> entry : assetsMap.entrySet()){
-            assets.put(entry.getKey(),get(entry.getKey(),entry.getValue()));
-        }
-        return assets;
     }
 
 

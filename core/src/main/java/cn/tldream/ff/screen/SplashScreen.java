@@ -25,7 +25,6 @@ public class SplashScreen extends BaseScreen {
         engineLogo = resourceModule.get("vanilla:texture.logo.engine_logo");
         studioLogoPart1 = resourceModule.get("vanilla:texture.logo.tld_p1");
         studioLogoPart2 = resourceModule.get("vanilla:texture.logo.tld_p2");
-//        resourceModule.getResourceManager().finishLoading();
         setAssetsLoaded(true);
         screenModule.getScreenManager().switchTo(SplashScreen.class);
     }

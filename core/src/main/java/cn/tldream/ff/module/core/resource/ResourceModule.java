@@ -7,6 +7,10 @@ import cn.tldream.ff.module.core.resource.descriptor.ResourceDescriptor;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+
 /*
 * 资源管理模块
 * 依赖模块：配置管理模块
@@ -88,11 +92,69 @@ public class ResourceModule implements GameModule {
      * 暴露服务接口
      * */
 
+    /**将资源加入加载队列
+     * @param id 资源id
+     * */
+    public void load(String id){
+        ResourceDescriptor resd = configModule.getResource(id);
+        resourceManager.load(resd.getPath(),resd.getType());
+    }
+
+    /**
+     * 批量将资源加入加载队列
+     * @param ids 资源id数组
+     * */
+    public void loadBatch(Collection<String> ids){
+        ids.forEach(this::load);
+    }
+
+    /**
+     * 获取资源
+     * @param id 资源id
+     * @return 资源
+     * */
+    public synchronized <T> T get (String id) {
+        ResourceDescriptor resd = configModule.getResource(id);
+        return resourceManager.get(resd.getPath(),resd.getType()) ;
+    }
+
+    /**
+     * 批量获取资源
+     * @param ids 资源id数组
+     * @return 资源id与资源的映射
+     * */
+    public synchronized <T> HashMap<String, T> getBatch (Collection<String> ids) {
+        HashMap<String, T> map = new HashMap<>();
+        ids.forEach(id -> {map.put(id, this.get(id));});
+        return map;
+    }
+
+    /**
+     * 更新，继续加载
+     * */
+    public boolean update(){
+        Gdx.app.debug(className, "更新");
+        return resourceManager.update();
+    }
+
     /**
      * 同步加载已经在加载队列的资源，阻塞
      * */
     public void finishLoading(){
         resourceManager.finishLoading();
+    }
+
+    /**
+     * 同步加载并获取资源,阻塞
+     * @param id 资源id
+     * @return 资源
+     * */
+    public synchronized <T> T loadAndGet(String id){
+        ResourceDescriptor resd = configModule.getResource(id);
+        resourceManager.load(resd.getPath(),resd.getType());
+        resourceManager.finishLoading();
+        return resourceManager.get(resd.getPath(),resd.getType());
+
     }
 
     /**
@@ -104,36 +166,5 @@ public class ResourceModule implements GameModule {
         Gdx.app.debug(className, "获取字体");
         return resourceManager.getFont(size);
     }
-
-    /**将资源加入加载队列
-     * @param id 资源id
-     * */
-    public void load(String id){
-        ResourceDescriptor resd = configModule.getResource(id);
-        resourceManager.load(resd.getPath(),resd.getType());
-    }
-
-    /*通过资源id，获取资源*/
-    public synchronized <T> T get (String id) {
-        ResourceDescriptor resd = configModule.getResource(id);
-        return resourceManager.get(resd.getPath(),resd.getType()) ;
-    }
-
-    /*通过资源id，阻塞同步加载并获取资源*/
-    public synchronized <T> T loadAndGet(String id){
-        ResourceDescriptor resd = configModule.getResource(id);
-        resourceManager.load(resd.getPath(),resd.getType());
-        resourceManager.finishLoading();
-        return resourceManager.get(resd.getPath(),resd.getType());
-
-    }
-
-    /*更新，继续加载*/
-    public boolean update(){
-        Gdx.app.debug(className, "更新");
-        return resourceManager.update();
-    }
-
-
 
 }

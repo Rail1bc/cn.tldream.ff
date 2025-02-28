@@ -38,6 +38,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ConfigModule implements GameModule {
     private static final String className = "配置管理模块";
     private static final Map<String, ResourceDescriptor> idMap = new ConcurrentHashMap<>(); // id与资源描述符的映射
+//    private static final Map<>
     private static final ConfigModule instance = new ConfigModule(); // 单例
     private static final ConfigManager configManager = new ConfigManager(idMap);; // 配置管理器
     private static ResourceModule resourceModule; // 资源管理模块

@@ -54,6 +54,7 @@ public class ConfigManager implements Disposable{
     public void preInit() {
         Gdx.app.log(className, "预初始化");
         loadConfig(resourceModule.loadAndGet("vanilla:core")); // 读取核心配置
+        loadConfig(resourceModule.loadAndGet("vanilla:config.core.overall"));// 读取全局配置
         loadConfig(resourceModule.loadAndGet("vanilla:config.resources.font")); // 读取字体资源配置
         loadConfig(resourceModule.loadAndGet("vanilla:config.resources.skin")); // 读取皮肤资源配置
         loadConfig(resourceModule.loadAndGet("vanilla:config.resources.texture")); // 读取纹理资源配置
