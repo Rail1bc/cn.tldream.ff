@@ -38,9 +38,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ConfigModule implements GameModule {
     private static final String className = "配置管理模块";
     private static final Map<String, ResourceDescriptor> idMap = new ConcurrentHashMap<>(); // id与资源描述符的映射
-//    private static final Map<>
+    private static final Map<ConfigKey, Object> configMap = new ConcurrentHashMap<>();
     private static final ConfigModule instance = new ConfigModule(); // 单例
-    private static final ConfigManager configManager = new ConfigManager(idMap);; // 配置管理器
+    private static final ConfigManager configManager = new ConfigManager(idMap, configMap); // 配置管理器
     private static ResourceModule resourceModule; // 资源管理模块
     private static boolean initialized = false; // 模块初始化状态
 
@@ -67,6 +67,16 @@ public class ConfigModule implements GameModule {
     public ResourceDescriptor getResource(String id) {
         if(idMap.containsKey(id)) return idMap.get(id);
         return null;
+    }
+
+    /*根据枚举获取全局配置*/
+    public <T> T getConfig(ConfigKey key) {
+        return (T) configMap.get(key);
+    }
+
+    /*根据枚举设置对应全局配置*/
+    public void setConfig(ConfigKey key, Object value) {
+        configMap.put(key, value);
     }
 
 

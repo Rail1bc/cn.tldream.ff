@@ -1,6 +1,7 @@
 package cn.tldream.ff;
 
 import cn.tldream.ff.module.core.ModuleManager;
+import cn.tldream.ff.module.core.config.ConfigKey;
 import cn.tldream.ff.module.core.config.ConfigModule;
 import cn.tldream.ff.module.core.resource.ResourceModule;
 import cn.tldream.ff.module.core.screen.ScreenModule;
@@ -19,6 +20,7 @@ public class FightGame extends Game {
     private Engine engine; // ashley
     private final ModuleManager modules; // 模块管理器
     private final String assetsPath; //资源目录路径
+    private ConfigModule config;
 
     public FightGame(String assetsPath) {
         this.assetsPath = assetsPath; // 设置资源路径
@@ -28,15 +30,21 @@ public class FightGame extends Game {
 
     @Override
     public void create() {
-        Gdx.app.setLogLevel(Application.LOG_DEBUG); // 设置日志级别为调试级别
+        Gdx.app.setLogLevel(3);
+
         // 注册模块
         modules
-            .register("config", ConfigModule.getInstance())
+            .register("config", config = ConfigModule.getInstance())
             .register("resource", new ResourceModule(assetsPath))
             .register("screen", new ScreenModule(this));
 
+
         // 初始化模块
         modules.initialize();
+
+        Gdx.app.setLogLevel(ConfigModule.getInstance().getConfig(ConfigKey.LOG_LEVEL)); // 设置日志级别为调试级别
+
+        applyWindowConfig();
     }
 
     @Override
@@ -48,5 +56,25 @@ public class FightGame extends Game {
     public void dispose() {
         modules.dispose();
         super.dispose();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        super.resize(width, height);
+        config.setConfig(ConfigKey.WINDOW_WIDTH, width);
+        config.setConfig(ConfigKey.WINDOW_HEIGHT, height);
+        applyWindowConfig();
+    }
+
+    public void applyWindowConfig() {
+        int width = config.getConfig(ConfigKey.WINDOW_WIDTH);
+        int height = config.getConfig(ConfigKey.WINDOW_HEIGHT);
+        boolean fullscreen = config.getConfig(ConfigKey.FULLSCREEN);
+
+        if (fullscreen) {
+            Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+        } else {
+            Gdx.graphics.setWindowedMode(width, height);
+        }
     }
 }

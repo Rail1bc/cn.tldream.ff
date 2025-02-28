@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.JsonValue;
 
 import java.util.Map;
+import java.util.Properties;
 
 
 /*
@@ -30,6 +31,8 @@ import java.util.Map;
 public class ConfigManager implements Disposable{
     private final String className = "配置管理器";
     private final Map<String, ResourceDescriptor> idMap; // id与资源描述符的映射
+    private final Map<ConfigKey,Object> configMap;
+    Properties properties;
     private ResourceModule resourceModule; // 资源管理模块实例
 
 
@@ -39,9 +42,10 @@ public class ConfigManager implements Disposable{
     * */
 
     /*构造函数*/
-    public ConfigManager(Map<String, ResourceDescriptor> idMap) {
+    public ConfigManager(Map<String, ResourceDescriptor> idMap, Map<ConfigKey,Object> configMap) {
         Gdx.app.log(className, "实例化");
         this.idMap = idMap; // 注入idMap
+        this.configMap = configMap; // 注入configMap
         idMap.put("vanilla:core", new JsonDes("core.json")); // 配置文件，全局唯一硬编码的相对路径
     }
 
@@ -53,11 +57,8 @@ public class ConfigManager implements Disposable{
     /*预初始化*/
     public void preInit() {
         Gdx.app.log(className, "预初始化");
-        loadConfig(resourceModule.loadAndGet("vanilla:core")); // 读取核心配置
-        loadConfig(resourceModule.loadAndGet("vanilla:config.core.overall"));// 读取全局配置
-        loadConfig(resourceModule.loadAndGet("vanilla:config.resources.font")); // 读取字体资源配置
-        loadConfig(resourceModule.loadAndGet("vanilla:config.resources.skin")); // 读取皮肤资源配置
-        loadConfig(resourceModule.loadAndGet("vanilla:config.resources.texture")); // 读取纹理资源配置
+        loadJson(); // 加载Json配置文件
+        loadProperties(); // 解析properties配置文件
     }
 
     /*主初始化*/
@@ -75,20 +76,27 @@ public class ConfigManager implements Disposable{
     /*
      * 私有功能方法
      * */
-
     /*加载Json文件*/
-    private void loadConfig(JsonValue json) {
-        loadConfig("vanilla:", json.child); // 自动递归加载子节点，命名空间为原版
+    private void loadJson(){
+        loadJson(resourceModule.loadAndGet("vanilla:core")); // 读取核心配置
+        loadJson(resourceModule.loadAndGet("vanilla:config.resources.font")); // 读取字体资源配置
+        loadJson(resourceModule.loadAndGet("vanilla:config.resources.skin")); // 读取皮肤资源配置
+        loadJson(resourceModule.loadAndGet("vanilla:config.resources.texture")); // 读取纹理资源配置
     }
 
-    /*地洞递归拼接节点名，加载配置文件*/
-    private void loadConfig(String id, JsonValue json){
+    /*加载Json文件*/
+    private void loadJson(JsonValue json) {
+        loadJson("vanilla:", json.child); // 自动递归加载子节点，命名空间为原版
+    }
+
+    /*地洞递归拼接节点名，加Json载配置文件*/
+    private void loadJson(String id, JsonValue json){
         if(json.has("path")){
             idMap.put(id + json.name(), createResourceDescriptor(json));
-            if(json.next != null) loadConfig(id , json.next);
+            if(json.next != null) loadJson(id , json.next);
         }
-        else loadConfig(id + json.name() + ".", json.child);
-        if(json.next() != null) loadConfig(id , json.next);
+        else loadJson(id + json.name() + ".", json.child);
+        if(json.next() != null) loadJson(id , json.next);
     }
 
     /*根据JsonValue中的type字段创建对应的ResourceDescriptor*/
@@ -101,6 +109,17 @@ public class ConfigManager implements Disposable{
             case "font" -> new FontDes(json.getString("path"));
             default -> null;
         };
+    }
+
+    /*解析properties配置文件*/
+    private void loadProperties() {
+        properties = resourceModule.loadAndGet("vanilla:config.core.overall"); // 获取配置文件
+        parseString(ConfigKey.GAME_NAME);
+        parseInteger(ConfigKey.LOG_LEVEL);
+        parseInteger(ConfigKey.WINDOW_WIDTH);
+        parseInteger(ConfigKey.WINDOW_HEIGHT);
+        parseBoolean(ConfigKey.FULLSCREEN);
+        parseString(ConfigKey.LANGUAGE);
     }
 
     /*保存配置文件*/
@@ -118,4 +137,15 @@ public class ConfigManager implements Disposable{
         config.writeString(content.toString(), false);*/
     }
 
+    private void parseString(ConfigKey key){
+        configMap.put(key,properties.getProperty(key.getVal(),key.getDefault()));
+    }
+
+    private void parseBoolean(ConfigKey key){
+        configMap.put(key,Boolean.parseBoolean(properties.getProperty(key.getVal())));
+    }
+
+    private void parseInteger(ConfigKey key){
+        configMap.put(key,Integer.parseInt(properties.getProperty(key.getVal())));
+    }
 }
