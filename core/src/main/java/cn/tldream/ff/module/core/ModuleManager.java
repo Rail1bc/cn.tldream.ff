@@ -10,14 +10,17 @@ import java.util.concurrent.ConcurrentHashMap;
  * 模块管理器
  * 生命周期：
  * 主类Create方法调用时，模块管理器实例化、初始化
- * 主类销处置，模块管理器处置
+ * 主类处置时，模块管理器处置
  * 工作内容：
  * 管理全部模块生命周期，并且确保模块初始化顺序
  * 工作流程：
  * 在主类Create方法中注册模块
  * 在主类调用初始化方法，模块初始化
- * 初始化流程，首先进行排序，然后依赖注入
- * 最后模块初始化
+ * 初始化时，首先进行依赖拓扑排序
+ * 排序后，依据排序，依次进行依赖注入
+ * 依赖注入后，依次进行预初始化
+ * 预初始化后，依次进行主初始化
+ * 主初始化后，依次进行后初始化
  * */
 public class ModuleManager {
     private static final ModuleManager instance = new ModuleManager();
@@ -49,11 +52,11 @@ public class ModuleManager {
     /*初始化全部模块*/
     public void initialize() {
         Gdx.app.debug(className, "初始化");
-        initializedModules = topologicalSort();
-        initializedModules.forEach(GameModule::receiveDependency);
-        initializedModules.forEach(GameModule::preInit);
-        initializedModules.forEach(GameModule::init);
-        initializedModules.forEach(GameModule::postInit);
+        initializedModules = topologicalSort(); // 拓扑排序
+        initializedModules.forEach(GameModule::receiveDependency); // 依赖注入
+        initializedModules.forEach(GameModule::preInit); // 预初始化
+        initializedModules.forEach(GameModule::init); // 主初始化
+        initializedModules.forEach(GameModule::postInit); // 后初始化
     }
 
 
