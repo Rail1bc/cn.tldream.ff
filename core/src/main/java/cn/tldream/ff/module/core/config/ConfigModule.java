@@ -90,6 +90,11 @@ public class ConfigModule implements GameModule {
         return new String[]{"resource"};
     }
 
+    @Override
+    public int getInitPriority(){
+        return -1;
+    }
+
     /*依赖注入*/
     @Override
     public void receiveDependency() {

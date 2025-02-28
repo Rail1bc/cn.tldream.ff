@@ -7,10 +7,8 @@ import cn.tldream.ff.module.core.resource.descriptor.ResourceDescriptor;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
-import java.security.PublicKey;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 
 /*
 * 资源管理模块
@@ -42,11 +40,6 @@ public class ResourceModule implements GameModule {
     /*构造函数*/
     public ResourceModule(String assetsPath) {
         resourceManager = new ResourceManager(assetsPath);
-    }
-
-    @Override
-    public int getInitPriority(){
-        return 1;
     }
 
     /*获取依赖*/

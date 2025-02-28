@@ -160,7 +160,7 @@ public class ModuleManager {
     }
 
 
-
+    /*Tarjan算法*/
     private TarjanResult tarjan(Set<String> nodes, Map<String, List<String>> adj) {
         int[] index = {0};
         Map<String, Integer> indexMap = new HashMap<>();
@@ -179,6 +179,7 @@ public class ModuleManager {
         return new TarjanResult(sccs, sccMap);
     }
 
+    /*递归实现强连通分量的查找*/
     private void strongConnect(String v, Map<String, List<String>> adj,
                                Map<String, Integer> indexMap, Map<String, Integer> lowLink,
                                Deque<String> stack, Set<String> onStack,
@@ -211,6 +212,7 @@ public class ModuleManager {
         }
     }
 
+    /*拓扑排序结果*/
     static class TarjanResult {
         List<List<String>> sccs;
         Map<String, Integer> sccMap;
