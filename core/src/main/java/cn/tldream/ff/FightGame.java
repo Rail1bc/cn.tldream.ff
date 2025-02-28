@@ -10,6 +10,11 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 
 /** {@link Game} implementation shared by all platforms. */
+/**
+ * 主类
+ * 启动必要参数：
+ * assetsPath:资源目录路径
+ * */
 public class FightGame extends Game {
     private Engine engine; // ashley
     private final ModuleManager modules; // 模块管理器

@@ -1,6 +1,7 @@
 package cn.tldream.ff.module.core.resource;
 
 import cn.tldream.ff.module.GameModule;
+import cn.tldream.ff.module.core.ModuleManager;
 import cn.tldream.ff.module.core.config.ConfigModule;
 import cn.tldream.ff.module.core.resource.descriptor.ResourceDescriptor;
 import com.badlogic.gdx.Gdx;
@@ -24,7 +25,7 @@ import com.badlogic.gdx.Gdx;
 public class ResourceModule implements GameModule {
     private final String className = "资源管理模块";
     private final ResourceManager resourceManager; //资源管理器
-    private final ConfigModule configModule = ConfigModule.getInstance(); // 配置管理模块
+    private ConfigModule configModule; // 配置管理模块
     private boolean isInitialized = false; // 初始化状态
 
     /*
@@ -46,6 +47,7 @@ public class ResourceModule implements GameModule {
     /*依赖注入*/
     @Override
     public void receiveDependency() {
+        configModule = ModuleManager.getModule("config", ConfigModule.class);
         resourceManager.setConfigModule(configModule);
     }
 
