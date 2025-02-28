@@ -151,18 +151,12 @@ public class ResourceModule implements GameModule {
 
     }
 
-    /**
-     * 获取字体
-     * @param size 字体大小
-     * @return 字体
-     * */
-    public BitmapFont getFont(int size) {
-        Gdx.app.debug(className, "获取字体");
-        return resourceManager.getFont(size);
+    public void loadFont(String id){
+        resourceManager.loadFont(id);
     }
 
-    public void setParameter(String id){
-        resourceManager.setParameter(id);
+    public void setParameterFillName(String id,int size){
+        resourceManager.setParameter(id,size);
     }
 
 }

@@ -3,7 +3,6 @@ package cn.tldream.ff.screen;
 import cn.tldream.ff.FightGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -89,7 +88,7 @@ public class MainMenuScreen extends BaseScreen {
 
 
 
-        style.font = resourceModule.getFont(36);
+        style.font = styleModule.getFont();
 
         System.out.println(style.font.getScaleX() + style.font.getScaleY());
 

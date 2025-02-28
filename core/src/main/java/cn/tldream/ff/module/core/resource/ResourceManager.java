@@ -87,23 +87,6 @@ public class ResourceManager extends AssetManager{
     * 暴露给资源管理模块
     * */
 
-    /*获取字体*/
-    public BitmapFont getFont(int size) {
-        Gdx.app.debug(className, "获取字体");
-        parameter.fontParameters.size = size;
-
-        // 加载字体
-        load(configModule.getResource("vanilla:font.ttf.cn").getPath(), BitmapFont.class , parameter);
-
-        finishLoading();
-
-        // 获取字体
-        BitmapFont myBigFont = get(configModule.getResource("vanilla:font.ttf.cn").getPath(), BitmapFont.class);
-        // 设置字体支持Markup
-        myBigFont.getData().markupEnabled = true;
-
-        return myBigFont;
-    }
 
     /*获取文件*/
     public FileHandle getFileHandle(String fileName) {
@@ -117,9 +100,21 @@ public class ResourceManager extends AssetManager{
     }
 
     /*设置FreeType加载器参数*/
-    public void setParameter(String id) {
+    public void setParameter(String id,int size) {
         this.parameter.fontFileName = configModule.getResource(id).getPath();
+        this.parameter.fontParameters.size = size;
+
+        // 加载字体
+        load(configModule.getResource("vanilla:font.ttf.cn").getPath(), BitmapFont.class , parameter);
+
     }
+
+    /*加载字体*/
+    public void loadFont(String id) {
+        ResourceDescriptor resd = configModule.getResource(id);
+        load(resd.getPath(), resd.getType(),parameter);
+    }
+
 
 
     /*

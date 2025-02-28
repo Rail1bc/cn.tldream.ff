@@ -5,6 +5,7 @@ import cn.tldream.ff.module.core.ModuleManager;
 import cn.tldream.ff.module.core.config.ConfigModule;
 import cn.tldream.ff.module.core.resource.ResourceManager;
 import cn.tldream.ff.module.core.resource.ResourceModule;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 public class StyleModule implements GameModule {
     private final String className = "样式管理器";
@@ -48,5 +49,9 @@ public class StyleModule implements GameModule {
     @Override
     public void dispose() {
 
+    }
+
+    public BitmapFont getFont() {
+        return styleManager.getFont();
     }
 }
