@@ -5,6 +5,7 @@ import cn.tldream.ff.module.core.config.ConfigKey;
 import cn.tldream.ff.module.core.config.ConfigModule;
 import cn.tldream.ff.module.core.resource.ResourceModule;
 import cn.tldream.ff.module.core.screen.ScreenModule;
+import cn.tldream.ff.module.core.style.StyleModule;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
@@ -36,7 +37,9 @@ public class FightGame extends Game {
         modules
             .register("config", config = ConfigModule.getInstance())
             .register("resource", new ResourceModule(assetsPath))
-            .register("screen", new ScreenModule(this));
+            .register("style", new StyleModule())
+            .register("screen", new ScreenModule(this))
+        ;
 
 
         // 初始化模块

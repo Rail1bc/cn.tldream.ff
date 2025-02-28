@@ -71,6 +71,7 @@ public class ResourceManager extends AssetManager{
 
     /*预初始化*/
     public void preInit(){
+        Gdx.app.debug(className, "预初始化");
         freeTypeFontLoader(); // 设置FreeType字体加载器
     }
 
@@ -92,12 +93,12 @@ public class ResourceManager extends AssetManager{
         parameter.fontParameters.size = size;
 
         // 加载字体
-        load(assetsPath + configModule.getResource("vanilla:font.ttf.cn").getPath(), BitmapFont.class , parameter);
+        load(configModule.getResource("vanilla:font.ttf.cn").getPath(), BitmapFont.class , parameter);
 
         finishLoading();
 
         // 获取字体
-        BitmapFont myBigFont = get(assetsPath + configModule.getResource("vanilla:font.ttf.cn").getPath(), BitmapFont.class);
+        BitmapFont myBigFont = get(configModule.getResource("vanilla:font.ttf.cn").getPath(), BitmapFont.class);
         // 设置字体支持Markup
         myBigFont.getData().markupEnabled = true;
 
@@ -113,6 +114,11 @@ public class ResourceManager extends AssetManager{
     public void load(String id){
         ResourceDescriptor resd = configModule.getResource(id);
         load(resd.getPath(),resd.getType());
+    }
+
+    /*设置FreeType加载器参数*/
+    public void setParameter(String id) {
+        this.parameter.fontFileName = configModule.getResource(id).getPath();
     }
 
 
@@ -137,12 +143,10 @@ public class ResourceManager extends AssetManager{
 
     /*设置FreeType 字体加载器*/
     private void freeTypeFontLoader() {
-        FileHandleResolver resolver = new AbsoluteFileHandleResolver();
         setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
         setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
 
-        parameter = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        this.parameter = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         parameter.fontParameters.incremental = true;
-        parameter.fontFileName = assetsPath + configModule.getResource("vanilla:font.ttf.cn").getPath();
     }
 }

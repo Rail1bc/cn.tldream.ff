@@ -7,6 +7,7 @@ import cn.tldream.ff.module.core.resource.descriptor.ResourceDescriptor;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
+import java.security.PublicKey;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -165,6 +166,10 @@ public class ResourceModule implements GameModule {
     public BitmapFont getFont(int size) {
         Gdx.app.debug(className, "获取字体");
         return resourceManager.getFont(size);
+    }
+
+    public void setParameter(String id){
+        resourceManager.setParameter(id);
     }
 
 }

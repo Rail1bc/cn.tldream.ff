@@ -74,75 +74,150 @@ public class ModuleManager {
     /*模块排序*/
     private List<GameModule> topologicalSort() {
         Gdx.app.debug(className, "依赖关系拓扑排序");
-        // 实现基于依赖关系的拓扑排序算法
-        // 确保依赖模块先初始化
-        // 使用Kahn算法实现拓扑排序
-        Map<String, Integer> inDegree = new ConcurrentHashMap<>();
-        Map<String, List<String>> adjList = new ConcurrentHashMap<>();
-        Queue<String> queue = new LinkedList<>();
 
-        // 初始化数据结构
-        modules.keySet().forEach(name -> {
-            inDegree.put(name, 0);
-            adjList.put(name, new ArrayList<>());
-        });
-
-        // 构建原始依赖图
-        modules.forEach((name, module) -> {
-            for (String dep : module.getDependencies()) {
-                if (!modules.containsKey(dep)) {
-                    throw new IllegalStateException("未找到模块: " + dep);
-                }
-                adjList.get(dep).add(name);
-                inDegree.put(name, inDegree.get(name) + 1);
+        // 构建邻接表
+        Map<String, List<String>> adj = new HashMap<>();
+        for (String moduleName : modules.keySet()) {
+            adj.put(moduleName, new ArrayList<>());
+        }
+        for (String module : modules.keySet()) {
+            for (String dep : modules.get(module).getDependencies()) {
+                adj.get(dep).add(module);
             }
-        });
+        }
 
-        // 找到入度为0的起点
-        inDegree.entrySet().stream()
-            .filter(entry -> entry.getValue() == 0)
-            .forEach(entry -> queue.add(entry.getKey()));
+        // 使用Tarjan算法找到所有SCC
+        TarjanResult tarjanResult = tarjan(modules.keySet(), adj);
+        List<List<String>> sccs = tarjanResult.sccs;
+        Map<String, Integer> sccMap = tarjanResult.sccMap;
 
-        // 第一轮拓扑排序（处理非循环部分）
-        List<GameModule> sorted = new ArrayList<>();
-        Queue<String> initialQueue = inDegree.entrySet().stream()
-            .filter(entry -> entry.getValue() == 0)
-            .map(Map.Entry::getKey)
-            .collect(Collectors.toCollection(LinkedList::new));
+        // 构建SCC之间的边
+        Map<Integer, Set<Integer>> sccAdj = new HashMap<>();
+        Map<Integer, Integer> inDegree = new HashMap<>();
 
-        while (!initialQueue.isEmpty()) {
-            String current = initialQueue.poll();
-            sorted.add(modules.get(current));
-            for (String neighbor : adjList.get(current)) {
+        for (int i = 0; i < sccs.size(); i++) {
+            sccAdj.put(i, new HashSet<>());
+            inDegree.put(i, 0);
+        }
+
+        for (String u : modules.keySet()) {
+            for (String v : adj.get(u)) {
+                int sccU = sccMap.get(u);
+                int sccV = sccMap.get(v);
+                if (sccU != sccV) {
+                    if (!sccAdj.get(sccU).contains(sccV)) {
+                        sccAdj.get(sccU).add(sccV);
+                        inDegree.put(sccV, inDegree.getOrDefault(sccV, 0) + 1);
+                    }
+                }
+            }
+        }
+
+        // 拓扑排序SCC图
+        Queue<Integer> queue = new LinkedList<>();
+        for (int sccId : inDegree.keySet()) {
+            if (inDegree.get(sccId) == 0) {
+                queue.add(sccId);
+            }
+        }
+
+        List<Integer> topoOrder = new ArrayList<>();
+        while (!queue.isEmpty()) {
+            int sccId = queue.poll();
+            topoOrder.add(sccId);
+            for (int neighbor : sccAdj.getOrDefault(sccId, new HashSet<>())) {
                 inDegree.put(neighbor, inDegree.get(neighbor) - 1);
                 if (inDegree.get(neighbor) == 0) {
-                    initialQueue.add(neighbor);
+                    queue.add(neighbor);
                 }
             }
         }
 
-        if (sorted.size() < modules.size()) {
-            List<GameModule> cyclicModules = modules.values().stream()
-                .filter(module -> !sorted.contains(module))
-                .sorted(Comparator
-                    .comparingInt(GameModule::getInitPriority) // 优先处理高优先级（数值小的）
-                    .thenComparing(module -> module.getClass().getSimpleName()) // 相同优先级按名称排序
-                )
-                .collect(Collectors.toList());
-
-            // 添加循环依赖模块到排序列表
-            sorted.addAll(cyclicModules);
+        // 收集每个SCC的模块并排序
+        Map<Integer, List<GameModule>> sccModules = new HashMap<>();
+        for (String moduleName : modules.keySet()) {
+            int sccId = sccMap.get(moduleName);
+            sccModules.computeIfAbsent(sccId, k -> new ArrayList<>()).add(modules.get(moduleName));
+        }
+        for (List<GameModule> modules : sccModules.values()) {
+            modules.sort(Comparator.comparingInt(GameModule::getInitPriority));
         }
 
-        // 最终校验
-        if (sorted.size() != modules.size()) {
-            throw new IllegalStateException("存在无法解析的依赖关系");
+        // 构建结果列表
+        List<GameModule> result = new ArrayList<>();
+        for (int sccId : topoOrder) {
+            List<GameModule> modules = sccModules.get(sccId);
+            if (modules != null) {
+                result.addAll(modules);
+            }
         }
 
-        for(GameModule module : sorted){
+        for(GameModule module : result){
             Gdx.app.debug("排序", module.getClass().getSimpleName());
         }
 
-        return sorted;
+        return result;
+    }
+
+
+
+    private TarjanResult tarjan(Set<String> nodes, Map<String, List<String>> adj) {
+        int[] index = {0};
+        Map<String, Integer> indexMap = new HashMap<>();
+        Map<String, Integer> lowLink = new HashMap<>();
+        Deque<String> stack = new ArrayDeque<>();
+        Set<String> onStack = new HashSet<>();
+        List<List<String>> sccs = new ArrayList<>();
+        Map<String, Integer> sccMap = new HashMap<>();
+
+        for (String node : nodes) {
+            if (!indexMap.containsKey(node)) {
+                strongConnect(node, adj, indexMap, lowLink, stack, onStack, sccs, sccMap, index);
+            }
+        }
+
+        return new TarjanResult(sccs, sccMap);
+    }
+
+    private void strongConnect(String v, Map<String, List<String>> adj,
+                               Map<String, Integer> indexMap, Map<String, Integer> lowLink,
+                               Deque<String> stack, Set<String> onStack,
+                               List<List<String>> sccs, Map<String, Integer> sccMap, int[] indexHolder) {
+        indexMap.put(v, indexHolder[0]);
+        lowLink.put(v, indexHolder[0]);
+        indexHolder[0]++;
+        stack.push(v);
+        onStack.add(v);
+
+        for (String w : adj.getOrDefault(v, Collections.emptyList())) {
+            if (!indexMap.containsKey(w)) {
+                strongConnect(w, adj, indexMap, lowLink, stack, onStack, sccs, sccMap, indexHolder);
+                lowLink.put(v, Math.min(lowLink.get(v), lowLink.get(w)));
+            } else if (onStack.contains(w)) {
+                lowLink.put(v, Math.min(lowLink.get(v), indexMap.get(w)));
+            }
+        }
+
+        if (lowLink.get(v).equals(indexMap.get(v))) {
+            List<String> scc = new ArrayList<>();
+            String w;
+            do {
+                w = stack.pop();
+                onStack.remove(w);
+                scc.add(w);
+                sccMap.put(w, sccs.size());
+            } while (!w.equals(v));
+            sccs.add(scc);
+        }
+    }
+
+    static class TarjanResult {
+        List<List<String>> sccs;
+        Map<String, Integer> sccMap;
+
+        TarjanResult(List<List<String>> sccs, Map<String, Integer> sccMap) {
+            this.sccs = sccs;
+            this.sccMap = sccMap;
+        }
     }
 }
