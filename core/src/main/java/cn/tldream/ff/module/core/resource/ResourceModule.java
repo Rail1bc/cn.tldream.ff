@@ -55,6 +55,7 @@ public class ResourceModule implements GameModule {
     @Override
     public void preInit(){
         Gdx.app.debug(className, "预初始化");
+        resourceManager.preInit();
     }
 
     /*主初始化*/

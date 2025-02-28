@@ -73,7 +73,7 @@ public class ResourceManager extends AssetManager{
 
     /*预初始化*/
     public void preInit(){
-
+        freeTypeFontLoader(); // 设置FreeType字体加载器
     }
 
 
@@ -81,7 +81,6 @@ public class ResourceManager extends AssetManager{
     public void init() {
         Gdx.app.debug(className, "主初始化");
         loadAssets(); // 强制加载核心资源
-        freeTypeFontLoader(); // 设置FreeType字体加载器
     }
 
     /*
@@ -95,12 +94,12 @@ public class ResourceManager extends AssetManager{
         parameter.fontParameters.size = size;
 
         // 加载字体
-        load(assetsPath + "font/simhei.ttf", BitmapFont.class , parameter);
+        load(assetsPath + configModule.getResource("vanilla:font.ttf.cn").getPath(), BitmapFont.class , parameter);
 
         finishLoading();
 
         // 获取字体
-        BitmapFont myBigFont = get(assetsPath + "font/simhei.ttf", BitmapFont.class);
+        BitmapFont myBigFont = get(assetsPath + configModule.getResource("vanilla:font.ttf.cn").getPath(), BitmapFont.class);
         // 设置字体支持Markup
         myBigFont.getData().markupEnabled = true;
 
@@ -162,6 +161,6 @@ public class ResourceManager extends AssetManager{
 
         parameter = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         parameter.fontParameters.incremental = true;
-        parameter.fontFileName = assetsPath + "font/simhei.ttf";
+        parameter.fontFileName = assetsPath + configModule.getResource("vanilla:font.ttf.cn").getPath();
     }
 }
