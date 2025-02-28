@@ -5,23 +5,24 @@ import cn.tldream.ff.module.core.ModuleManager;
 import cn.tldream.ff.module.core.config.ConfigModule;
 import cn.tldream.ff.module.core.resource.descriptor.ResourceDescriptor;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
-/**
- * 资源管理模块
- * 依赖模块：配置管理模块
- * 生命周期：由主类实例化，并注册进模块管理器
- * 实例化 由主类进行
- * 依赖注入 |预初始化 |主初始化 |处置
- * 模块管理器统一进行管理
- * 工作内容：
- * 提供异步加载资源的功能
- * 可查看加载进度
- * 可同步加载
- * 工作流程：
- * 调用 load()方法，通过id 获取资源描述，再通过资源管理器加载资源
- * 调用 finishLoading()方法，阻塞等待加载完成
- * 调用 get()方法，获取资源
- * */
+/*
+* 资源管理模块
+* 依赖模块：配置管理模块
+* 生命周期：由主类实例化，并注册进模块管理器
+* 实例化 由主类进行
+* 依赖注入 |预初始化 |主初始化 |处置
+* 模块管理器统一进行管理
+* 工作内容：
+* 提供异步加载资源的功能
+* 可查看加载进度
+* 可同步加载
+* 工作流程：
+* 调用 load()方法，通过id 获取资源描述，再通过资源管理器加载资源
+* 调用 finishLoading()方法，阻塞等待加载完成
+* 调用 get()方法，获取资源
+* */
 public class ResourceModule implements GameModule {
     private final String className = "资源管理模块";
     private final ResourceManager resourceManager; //资源管理器
@@ -34,8 +35,8 @@ public class ResourceModule implements GameModule {
      * */
 
     /*构造函数*/
-    public ResourceManager getResourceManager() {
-        return resourceManager;
+    public ResourceModule(String assetsPath) {
+        resourceManager = new ResourceManager(assetsPath);
     }
 
     @Override
@@ -87,17 +88,26 @@ public class ResourceModule implements GameModule {
      * 暴露服务接口
      * */
 
-    /*构造函数*/
-    public ResourceModule(String assetsPath) {
-        resourceManager = new ResourceManager(assetsPath);
-    }
-
-    /*同步加载，阻塞*/
+    /**
+     * 同步加载已经在加载队列的资源，阻塞
+     * */
     public void finishLoading(){
         resourceManager.finishLoading();
     }
 
-    /*通过资源id，将资源加入加载队列*/
+    /**
+     * 获取字体
+     * @param size 字体大小
+     * @return 字体
+     * */
+    public BitmapFont getFont(int size) {
+        Gdx.app.debug(className, "获取字体");
+        return resourceManager.getFont(size);
+    }
+
+    /**将资源加入加载队列
+     * @param id 资源id
+     * */
     public void load(String id){
         ResourceDescriptor resd = configModule.getResource(id);
         resourceManager.load(resd.getPath(),resd.getType());

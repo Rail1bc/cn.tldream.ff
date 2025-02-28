@@ -88,7 +88,7 @@ public class MainMenuScreen extends BaseScreen {
 
 
 
-        style.font = resourceModule.getResourceManager().getFont(36);
+        style.font = resourceModule.getFont(36);
 
         TextButton btn = new TextButton(text, style);
 

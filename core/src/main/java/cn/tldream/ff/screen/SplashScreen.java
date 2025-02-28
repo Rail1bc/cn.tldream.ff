@@ -22,9 +22,9 @@ public class SplashScreen extends BaseScreen {
     /*获取核心资源*/
     @Override
     public void loadAssets() {
-        engineLogo = resourceModule.getResourceManager().get("logo/libgdx.png", Texture.class);
-        studioLogoPart1 = resourceModule.getResourceManager().get("logo/tld_p1.png", Texture.class);
-        studioLogoPart2 = resourceModule.getResourceManager().get("logo/tld_p2.png", Texture.class);
+        engineLogo = resourceModule.get("vanilla:texture.logo.engine_logo");
+        studioLogoPart1 = resourceModule.get("vanilla:texture.logo.tld_p1");
+        studioLogoPart2 = resourceModule.get("vanilla:texture.logo.tld_p2");
 //        resourceModule.getResourceManager().finishLoading();
         setAssetsLoaded(true);
         screenModule.getScreenManager().switchTo(SplashScreen.class);

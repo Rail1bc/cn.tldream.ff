@@ -26,9 +26,6 @@ public class ScreenModule implements GameModule {
     }
 
     @Override
-    public int getInitPriority() { return 90; } // 次优先
-
-    @Override
     public String[] getDependencies() { return new String[] {"resource"}; } // 依赖模块
 
 
@@ -38,11 +35,16 @@ public class ScreenModule implements GameModule {
         this.resourceModule = ModuleManager.getModule("resource", ResourceModule.class);
     }
 
-    /*初始化*/
+    /*主初始化*/
     @Override
     public void init() {
-        screenManager.initialize();
         isInitialized = true;
+    }
+
+    /*后初始化*/
+    @Override
+    public void postInit() {
+        screenManager.postInit();
     }
 
     @Override
