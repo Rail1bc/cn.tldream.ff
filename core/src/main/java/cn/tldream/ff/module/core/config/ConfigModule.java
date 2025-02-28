@@ -72,6 +72,11 @@ public class ConfigModule implements GameModule {
      * 由模块管理器调用
      * */
 
+    @Override
+    public String[] getDependencies() {
+        return new String[]{"resource"};
+    }
+
     /*依赖注入*/
     @Override
     public void receiveDependency() {

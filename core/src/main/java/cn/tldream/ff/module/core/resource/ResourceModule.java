@@ -38,6 +38,11 @@ public class ResourceModule implements GameModule {
         return resourceManager;
     }
 
+    @Override
+    public int getInitPriority(){
+        return 1;
+    }
+
     /*获取依赖*/
     @Override
     public String[] getDependencies() {

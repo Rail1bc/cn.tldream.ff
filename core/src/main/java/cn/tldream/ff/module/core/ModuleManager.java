@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * 模块管理器
@@ -86,7 +87,7 @@ public class ModuleManager {
             adjList.put(name, new ArrayList<>());
         });
 
-        // 构建图
+        // 构建原始依赖图
         modules.forEach((name, module) -> {
             for (String dep : module.getDependencies()) {
                 if (!modules.containsKey(dep)) {
@@ -102,24 +103,44 @@ public class ModuleManager {
             .filter(entry -> entry.getValue() == 0)
             .forEach(entry -> queue.add(entry.getKey()));
 
-        // 执行拓扑排序
+        // 第一轮拓扑排序（处理非循环部分）
         List<GameModule> sorted = new ArrayList<>();
-        while (!queue.isEmpty()) {
-            String current = queue.poll();
-            GameModule module = modules.get(current);
+        Queue<String> initialQueue = inDegree.entrySet().stream()
+            .filter(entry -> entry.getValue() == 0)
+            .map(Map.Entry::getKey)
+            .collect(Collectors.toCollection(LinkedList::new));
 
-            // 注入依赖
-            for (String dep : module.getDependencies()) {
-
-            }
-
-            sorted.add(module);
+        while (!initialQueue.isEmpty()) {
+            String current = initialQueue.poll();
+            sorted.add(modules.get(current));
             for (String neighbor : adjList.get(current)) {
                 inDegree.put(neighbor, inDegree.get(neighbor) - 1);
                 if (inDegree.get(neighbor) == 0) {
-                    queue.add(neighbor);
+                    initialQueue.add(neighbor);
                 }
             }
+        }
+
+        if (sorted.size() < modules.size()) {
+            List<GameModule> cyclicModules = modules.values().stream()
+                .filter(module -> !sorted.contains(module))
+                .sorted(Comparator
+                    .comparingInt(GameModule::getInitPriority) // 优先处理高优先级（数值小的）
+                    .thenComparing(module -> module.getClass().getSimpleName()) // 相同优先级按名称排序
+                )
+                .collect(Collectors.toList());
+
+            // 添加循环依赖模块到排序列表
+            sorted.addAll(cyclicModules);
+        }
+
+        // 最终校验
+        if (sorted.size() != modules.size()) {
+            throw new IllegalStateException("存在无法解析的依赖关系");
+        }
+
+        for(GameModule module : sorted){
+            Gdx.app.debug("排序", module.getClass().getSimpleName());
         }
 
         return sorted;
