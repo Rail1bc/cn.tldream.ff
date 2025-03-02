@@ -19,6 +19,12 @@
         "type": "json",
         "path": "config/texture.json"
       }
+    },
+    "text": {
+      "ui": {
+        "type": "json",
+        "path": "text/ui.json"
+      }
     }
   }
 }

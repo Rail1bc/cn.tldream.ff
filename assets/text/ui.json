@@ -1,0 +1,20 @@
+{
+  "text": {
+    "ui": {
+      "button": {
+        "start": {
+          "text": "开始游戏"
+        },
+        "setting": {
+          "text": "设置"
+        },
+        "exit": {
+          "text": "退出"
+        },
+        "back": {
+          "text": "返回"
+        }
+      }
+    }
+  }
+}

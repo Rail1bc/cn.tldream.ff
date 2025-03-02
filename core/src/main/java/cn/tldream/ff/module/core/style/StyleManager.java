@@ -32,7 +32,6 @@ public class StyleManager {
         resourceModule.setParameterFillName("vanilla:font.ttf.cn",32);
         // 加载字体
         resourceModule.loadFont("vanilla:font.ttf.cn");
-
     }
 
     /*主初始化*/

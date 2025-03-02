@@ -82,6 +82,12 @@ public class ConfigManager implements Disposable{
         loadJson(resourceModule.loadAndGet("vanilla:config.resources.font")); // 读取字体资源配置
         loadJson(resourceModule.loadAndGet("vanilla:config.resources.skin")); // 读取皮肤资源配置
         loadJson(resourceModule.loadAndGet("vanilla:config.resources.texture")); // 读取纹理资源配置
+
+//        for(String entry : idMap.keySet()){ // 遍历idMap
+//            if(entry.equals("vanilla:core"))continue;
+//            Gdx.app.debug(className, "加载配置文件：" + entry);
+//            loadJson(resourceModule.loadAndGet(entry));
+//        }
     }
 
     /*加载Json文件*/
