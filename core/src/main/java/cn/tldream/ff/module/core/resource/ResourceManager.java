@@ -4,7 +4,6 @@ import cn.tldream.ff.module.core.config.ConfigModule;
 import cn.tldream.ff.module.core.resource.descriptor.ResourceDescriptor;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.AbsoluteFileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -99,28 +98,43 @@ public class ResourceManager extends AssetManager{
         load(resd.getPath(),resd.getType());
     }
 
-    /*设置FreeType加载器参数*/
-    public void setParameter(String id,int size) {
-        this.parameter.fontFileName = configModule.getResource(id).getPath();
-        this.parameter.fontParameters.size = size;
-
-        // 加载字体
-        load(configModule.getResource("vanilla:font.ttf.cn").getPath(), BitmapFont.class , parameter);
-
-    }
-
-    /*加载字体*/
-    public void loadFont(String id) {
-        ResourceDescriptor resd = configModule.getResource(id);
-        load(resd.getPath(), resd.getType(),parameter);
-    }
-
 
     /*
-     * 私有功能方法
-     * */
+    * 为样式管理模块
+    * StyleModule
+    * 提供的方法
+    * */
 
-    /*设置FreeType 字体加载器*/
+    /**
+     * 设置FreeType加载器参数
+     * @param id 字体资源id
+     * @param size 字体大小
+     * */
+    public void setParameter(String id,int size) {
+        ResourceDescriptor font = configModule.getResource(id);
+        this.parameter.fontFileName = font.getPath();
+        this.parameter.fontParameters.size = size;
+
+        loadFont(font); // 加载字体
+    }
+
+    /**
+     * 同步加载字体
+     * 在样式管理器预初始化时调用
+     * @param font 字体资源的资源描述符
+     * */
+    private void loadFont(ResourceDescriptor font) {
+        load(font.getPath(), font.getType(),parameter);
+        finishLoading();
+    }
+
+    /**
+     * 设置FreeType 字体加载器
+     * 作用是允许加载.ttf格式的字体
+     * 同时初始化FreeType字体加载参数
+     * FreeTypeFontLoaderParameter
+     * 并设置增量模式
+     * */
     private void freeTypeFontLoader(){
         setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
         setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
@@ -128,6 +142,12 @@ public class ResourceManager extends AssetManager{
         this.parameter = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         parameter.fontParameters.incremental = true;
     }
+
+
+
+    /*
+     * 私有功能方法
+     * */
 
     /*设置自定义加载器*/
     private void setLoaders() {

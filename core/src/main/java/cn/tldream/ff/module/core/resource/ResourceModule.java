@@ -151,10 +151,6 @@ public class ResourceModule implements GameModule {
 
     }
 
-    public void loadFont(String id){
-        resourceManager.loadFont(id);
-    }
-
     public void setParameterFillName(String id,int size){
         resourceManager.setParameter(id,size);
     }

@@ -34,9 +34,7 @@ public class StyleManager {
     public void preInit(){
         Gdx.app.debug(className, "预初始化");
         int fontSize = configModule.getConfig(ConfigKey.WINDOW_WIDTH);
-        resourceModule.setParameterFillName("vanilla:font.ttf.cn",fontSize/40);
-        // 加载字体
-        resourceModule.loadFont("vanilla:font.ttf.cn");
+        resourceModule.setParameterFillName("vanilla:font.ttf.cn",fontSize/40); // 设置字体、大小，同步加载
 
         skin = resourceModule.loadAndGet("vanilla:skin.uiskin.default");
     }
@@ -45,7 +43,6 @@ public class StyleManager {
     public void init() {
         Gdx.app.debug(className, "主初始化");
     }
-
 
 
     /*
