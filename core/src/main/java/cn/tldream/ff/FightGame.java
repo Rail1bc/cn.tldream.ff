@@ -5,9 +5,8 @@ import cn.tldream.ff.module.core.config.ConfigKey;
 import cn.tldream.ff.module.core.config.ConfigModule;
 import cn.tldream.ff.module.core.resource.ResourceModule;
 import cn.tldream.ff.module.core.screen.ScreenModule;
-import cn.tldream.ff.module.core.style.StyleModule;
+import cn.tldream.ff.module.core.screen.StyleModule;
 import com.badlogic.ashley.core.Engine;
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 

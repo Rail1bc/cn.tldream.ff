@@ -1,4 +1,4 @@
-package cn.tldream.ff.module.core.style;
+package cn.tldream.ff.module.core.screen;
 
 import cn.tldream.ff.module.GameModule;
 import cn.tldream.ff.module.core.ModuleManager;
@@ -6,6 +6,7 @@ import cn.tldream.ff.module.core.config.ConfigModule;
 import cn.tldream.ff.module.core.resource.ResourceModule;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class StyleModule implements GameModule {
     private final String className = "样式管理器";
@@ -20,6 +21,7 @@ public class StyleModule implements GameModule {
 
     /*构造函数*/
     public StyleModule() {
+        Gdx.app.debug(className, "实例化");
         styleManager = new StyleManager();
     }
 
@@ -55,7 +57,20 @@ public class StyleModule implements GameModule {
 
     }
 
+    /*
+     * 服务方法
+     * */
+
+    public Skin getSkin() {
+        return styleManager.getSkin();
+    }
+
+    /*获取字体*/
     public BitmapFont getFont() {
         return styleManager.getFont();
+    }
+
+    public <T> T getStyle(Class<T> type){
+        return getSkin().get(type);
     }
 }

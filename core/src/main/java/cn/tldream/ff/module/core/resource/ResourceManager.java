@@ -116,10 +116,18 @@ public class ResourceManager extends AssetManager{
     }
 
 
-
     /*
      * 私有功能方法
      * */
+
+    /*设置FreeType 字体加载器*/
+    private void freeTypeFontLoader(){
+        setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
+        setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
+
+        this.parameter = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        parameter.fontParameters.incremental = true;
+    }
 
     /*设置自定义加载器*/
     private void setLoaders() {
@@ -129,19 +137,10 @@ public class ResourceManager extends AssetManager{
 
     /*强制加载核心资源*/
     private void loadAssets() {
-        load("vanilla:skin.uiskin.default");
         load("vanilla:texture.logo.engine_logo");
         load("vanilla:texture.logo.tld_p1");
         load("vanilla:texture.logo.tld_p2");
         finishLoading();
     }
 
-    /*设置FreeType 字体加载器*/
-    private void freeTypeFontLoader() {
-        setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
-        setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
-
-        this.parameter = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        parameter.fontParameters.incremental = true;
-    }
 }

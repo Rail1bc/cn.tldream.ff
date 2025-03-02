@@ -4,7 +4,7 @@ import cn.tldream.ff.FightGame;
 import cn.tldream.ff.module.core.ModuleManager;
 import cn.tldream.ff.module.core.resource.ResourceModule;
 import cn.tldream.ff.module.core.screen.ScreenModule;
-import cn.tldream.ff.module.core.style.StyleModule;
+import cn.tldream.ff.module.core.screen.StyleModule;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
