@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class StyleModule implements GameModule {
-    private final String className = "样式管理器";
+    private final String className = "样式管理模块";
     private final StyleManager styleManager; // 样式管理器
     private ResourceModule resourceModule; // 资源管理模块实例
     private ConfigModule configModule; // 配置管理模块实例

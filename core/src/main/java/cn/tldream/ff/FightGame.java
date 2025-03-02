@@ -6,6 +6,7 @@ import cn.tldream.ff.module.core.config.ConfigModule;
 import cn.tldream.ff.module.core.resource.ResourceModule;
 import cn.tldream.ff.module.core.screen.ScreenModule;
 import cn.tldream.ff.module.core.screen.StyleModule;
+import cn.tldream.ff.module.core.screen.UIModule;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -37,6 +38,7 @@ public class FightGame extends Game {
             .register("config", config = ConfigModule.getInstance())
             .register("resource", new ResourceModule(assetsPath))
             .register("style", new StyleModule())
+            .register("ui",new UIModule())
             .register("screen", new ScreenModule(this))
         ;
 
