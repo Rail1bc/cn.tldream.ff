@@ -5,11 +5,16 @@ import cn.tldream.ff.module.core.ModuleManager;
 import cn.tldream.ff.module.core.config.ConfigModule;
 import cn.tldream.ff.module.core.resource.ResourceModule;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class UIModule implements GameModule {
     private final String className = "UI管理模块";
     private final UIManager uiManager; // UI管理器实例
     private StyleModule styleModule;
+    private final Map<String, Table> uiMap = new ConcurrentHashMap<>();
 
     /*
      * 生命周期方法
@@ -19,7 +24,7 @@ public class UIModule implements GameModule {
     /*构造函数*/
     public UIModule() {
         Gdx.app.debug(className, "实例化");
-        uiManager = new UIManager();
+        uiManager = new UIManager(this.uiMap);
     }
 
     /*获取依赖*/

@@ -5,6 +5,7 @@ import cn.tldream.ff.module.GameModule;
 import cn.tldream.ff.module.core.ModuleManager;
 import cn.tldream.ff.module.core.resource.ResourceManager;
 import cn.tldream.ff.module.core.resource.ResourceModule;
+import cn.tldream.ff.screen.BaseScreen;
 
 
 /**
@@ -23,6 +24,10 @@ public class ScreenModule implements GameModule {
     /*暴露服务接口*/
     public ScreenManager getScreenManager() {
         return screenManager;
+    }
+
+    public <T extends BaseScreen> void switchTo(Class<T> screenClass) {
+        screenManager.switchTo(screenClass);
     }
 
     @Override
