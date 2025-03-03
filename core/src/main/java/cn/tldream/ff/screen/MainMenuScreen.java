@@ -45,11 +45,6 @@ public class MainMenuScreen extends BaseScreen {
         stage.draw();      // 绘制舞台
     }
 
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
 
     @Override
     public void pause() {
