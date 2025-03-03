@@ -2,8 +2,6 @@ package cn.tldream.ff.module.core.screen;
 
 import cn.tldream.ff.module.GameModule;
 import cn.tldream.ff.module.core.ModuleManager;
-import cn.tldream.ff.module.core.config.ConfigModule;
-import cn.tldream.ff.module.core.resource.ResourceModule;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
@@ -53,6 +51,13 @@ public class UIModule implements GameModule {
     public void init() {
         Gdx.app.debug(className, "主初始化");
 
+    }
+
+    /*后初始化*/
+    @Override
+    public void postInit(){
+        Gdx.app.debug(className, "后初始化");
+        uiManager.postInit();
     }
 
     @Override

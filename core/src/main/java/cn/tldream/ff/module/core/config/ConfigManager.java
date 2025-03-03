@@ -50,7 +50,7 @@ public class ConfigManager implements Disposable{
     }
 
     /*依赖注入*/
-    public void setResourceModule(ResourceModule resourceModule) {
+    public void receiveDependency(ResourceModule resourceModule) {
         this.resourceModule = resourceModule; // 注入资源管理模块实例
     }
 

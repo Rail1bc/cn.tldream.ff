@@ -39,6 +39,7 @@ public class ResourceModule implements GameModule {
 
     /*构造函数*/
     public ResourceModule(String assetsPath) {
+        Gdx.app.debug(className, "实例化");
         resourceManager = new ResourceManager(assetsPath);
     }
 

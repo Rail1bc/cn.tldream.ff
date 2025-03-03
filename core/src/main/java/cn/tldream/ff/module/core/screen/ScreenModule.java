@@ -31,7 +31,7 @@ public class ScreenModule implements GameModule {
     }
 
     @Override
-    public String[] getDependencies() { return new String[] {"resource"}; } // 依赖模块
+    public String[] getDependencies() { return new String[] {"resource", "style","ui"}; } // 依赖模块
 
 
     /*依赖注入*/

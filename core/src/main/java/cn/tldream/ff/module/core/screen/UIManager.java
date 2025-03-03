@@ -73,5 +73,6 @@ public class UIManager {
         });
 
         uiMap.put(id, new Table());
+
     }
 }

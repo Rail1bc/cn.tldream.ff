@@ -99,7 +99,7 @@ public class ConfigModule implements GameModule {
     @Override
     public void receiveDependency() {
         resourceModule = ModuleManager.getModule("resource", ResourceModule.class);
-        configManager.setResourceModule(resourceModule);
+        configManager.receiveDependency(resourceModule);
     }
 
     /*预初始化*/

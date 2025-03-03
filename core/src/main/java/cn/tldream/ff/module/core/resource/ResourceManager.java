@@ -59,6 +59,7 @@ public class ResourceManager extends AssetManager{
                 else return super.resolve(assetsPath + fileName);
             }
         });
+        Gdx.app.debug(className, "实例化");
         this.assetsPath = assetsPath;
         setLoaders(); // 设置自定义加载器
     }
@@ -72,13 +73,13 @@ public class ResourceManager extends AssetManager{
     public void preInit(){
         Gdx.app.debug(className, "预初始化");
         freeTypeFontLoader(); // 设置FreeType字体加载器
+        loadAssets(); // 强制加载核心资源
     }
 
 
     /*主初始化*/
     public void init() {
         Gdx.app.debug(className, "主初始化");
-        loadAssets(); // 强制加载核心资源
     }
 
     /*
