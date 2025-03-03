@@ -6,6 +6,8 @@ import cn.tldream.ff.module.core.config.ConfigModule;
 import cn.tldream.ff.module.core.resource.descriptor.ResourceDescriptor;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -155,5 +157,6 @@ public class ResourceModule implements GameModule {
     public void setParameterFillName(String id,int size){
         resourceManager.setParameter(id,size);
     }
+
 
 }

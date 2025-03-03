@@ -4,7 +4,9 @@ import cn.tldream.ff.module.core.config.ConfigKey;
 import cn.tldream.ff.module.core.config.ConfigModule;
 import cn.tldream.ff.module.core.resource.ResourceModule;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class StyleManager {
@@ -33,8 +35,6 @@ public class StyleManager {
     /*预初始化*/
     public void preInit(){
         Gdx.app.debug(className, "预初始化");
-        int fontSize = configModule.getConfig(ConfigKey.WINDOW_WIDTH);
-        resourceModule.setParameterFillName("vanilla:font.ttf.cn",fontSize/40); // 设置字体、大小，同步加载
 
         skin = resourceModule.loadAndGet("vanilla:skin.uiskin.default");
     }
@@ -58,10 +58,13 @@ public class StyleManager {
      * @return 字体
      * */
     public BitmapFont getFont(){
+        int fontSize = configModule.getConfig(ConfigKey.WINDOW_WIDTH);
+        resourceModule.setParameterFillName("vanilla:font.ttf.cn",fontSize/40); // 设置字体、大小，同步加载
         // 获取字体
         BitmapFont myBigFont = resourceModule.get("vanilla:font.ttf.cn");
         // 设置字体支持Markup
         myBigFont.getData().markupEnabled = true;
+
 
         return myBigFont;
     }

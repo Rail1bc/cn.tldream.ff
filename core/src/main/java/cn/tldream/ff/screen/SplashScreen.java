@@ -31,7 +31,6 @@ public class SplashScreen extends BaseScreen {
 
     @Override
     public void show() {
-        super.show();
 
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override

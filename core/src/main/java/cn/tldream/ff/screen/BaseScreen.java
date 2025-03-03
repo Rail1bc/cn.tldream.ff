@@ -7,11 +7,13 @@ import cn.tldream.ff.module.core.screen.LayOutModule;
 import cn.tldream.ff.module.core.screen.ScreenModule;
 import cn.tldream.ff.module.core.screen.StyleModule;
 import cn.tldream.ff.module.core.screen.UIModule;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 public abstract class BaseScreen implements Screen {
+    private final String className = "屏幕类基类抽象类";
     protected FightGame game;
     protected ScreenModule screenModule;
     protected ResourceModule resourceModule;
@@ -39,11 +41,6 @@ public abstract class BaseScreen implements Screen {
 
     protected void setAssetsLoaded(boolean loaded) {
         this.assetsLoaded = loaded;
-    }
-
-    @Override
-    public void show(){
-
     }
 
     @Override

@@ -21,7 +21,6 @@ public class LoadingScreen extends BaseScreen {
 
     @Override
     public void show() {
-        super.show();
         shapeRenderer = new ShapeRenderer();
         font = new BitmapFont(); // 使用默认字体
         font.getData().setScale(2f);

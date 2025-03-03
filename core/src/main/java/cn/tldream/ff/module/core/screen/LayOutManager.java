@@ -1,15 +1,19 @@
 package cn.tldream.ff.module.core.screen;
 
 
+import cn.tldream.ff.module.core.config.ConfigKey;
+import cn.tldream.ff.module.core.config.ConfigModule;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Align;
 
 import java.util.Map;
 
 public class LayOutManager {
     private final String className = "布局管理器";
     private UIModule uiModule;
+    private ConfigModule configModule;
     private final Map<String, Table> tableMap;
 
     /*
@@ -27,6 +31,7 @@ public class LayOutManager {
     public void receiveDependency(UIModule uiModule) {
         Gdx.app.debug(className, "依赖注入");
         this.uiModule = uiModule;
+        this.configModule = ConfigModule.getInstance();
     }
 
     /*预初始化*/
@@ -52,18 +57,21 @@ public class LayOutManager {
     /*创建开始桌面*/
     private void createMainMenuTable(){
         Table table = new Table();
-        table.setFillParent(true);
+        table.setSize(200,600);
+        table.setPosition(200,0 , Align.left);
+        table.setFillParent(false);
+        table.right();
         table.setDebug(true);
-        table.defaults().spaceBottom(20).width(200)
-            .fill(false);
+//        table.align(Align.topRight);
+        table.defaults().spaceBottom(20).width(200).fill(false);
         Button btn = uiModule.getUI("btn_start");
-        table.add(btn).height(50);
+        table.add(btn).height(50).fill(false);
         table.row();
         btn = uiModule.getUI("btn_setting");
-        table.add(btn).height(50);
+        table.add(btn).height(50).fill(false);
         table.row();
         btn = uiModule.getUI("btn_exit");
-        table.add(btn).height(50);
+        table.add(btn).height(50).fill(false);
 
         tableMap.put("mainMenu", table);
     }

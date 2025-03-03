@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public class MainMenuScreen extends BaseScreen {
+    private final String className = "主菜单界面";
 
     public MainMenuScreen(FightGame game) {
         super(game);
@@ -32,7 +33,6 @@ public class MainMenuScreen extends BaseScreen {
 
     @Override
     public void show() {
-        super.show();
         Gdx.gl.glClearColor(0.15f, 0.15f, 0.2f, 1f);
     }
 
@@ -44,7 +44,6 @@ public class MainMenuScreen extends BaseScreen {
         stage.act(delta);  // 更新舞台逻辑
         stage.draw();      // 绘制舞台
     }
-
 
     @Override
     public void pause() {

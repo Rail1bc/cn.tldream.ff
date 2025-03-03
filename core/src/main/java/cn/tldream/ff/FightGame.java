@@ -21,6 +21,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  * assetsPath:资源目录路径
  * */
 public class FightGame extends Game {
+    private final String className = "主类";
     private Engine engine; // ashley
     private final ModuleManager modules; // 模块管理器
     private final String assetsPath; //资源目录路径

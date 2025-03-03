@@ -3,8 +3,6 @@ package cn.tldream.ff.module.core.screen;
 import cn.tldream.ff.FightGame;
 import cn.tldream.ff.module.core.config.ConfigKey;
 import cn.tldream.ff.module.core.config.ConfigModule;
-import cn.tldream.ff.module.core.resource.ResourceManager;
-import cn.tldream.ff.module.core.resource.ResourceModule;
 import cn.tldream.ff.screen.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
