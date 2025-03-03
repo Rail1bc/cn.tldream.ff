@@ -64,4 +64,9 @@ public class UIModule implements GameModule {
     public void dispose() {
 
     }
+
+    /*服务方法*/
+    public <T extends Table> T getUI(String id) {
+        return (T) uiMap.get(id);
+    }
 }
