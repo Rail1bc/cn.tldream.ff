@@ -35,6 +35,7 @@ public class UIManager {
     /*预初始化*/
     public void preInit(){
         Gdx.app.debug(className, "预初始化");
+        createUI();
     }
 
     /*主初始化*/
@@ -45,17 +46,20 @@ public class UIManager {
     /*后初始化*/
     public void postInit() {
         Gdx.app.debug(className, "后初始化");
-        createButtonUI("btn_start", "开始游戏", ()-> ModuleManager.getModule("screen",ScreenModule.class).switchTo(GameScreen.class));
-        createButtonUI("btn_setting", "设置", ()->System.out.println("设置按钮"));
-        createButtonUI("btn_exit", "退出游戏", ()->Gdx.app.exit());
-
     }
+
 
 
 
     /*
     * 私有方法
     * */
+
+    private void createUI(){
+        createButtonUI("btn_start", "开始游戏", ()-> ModuleManager.getModule("screen",ScreenModule.class).switchTo(GameScreen.class));
+        createButtonUI("btn_setting", "设置", ()->System.out.println("设置按钮"));
+        createButtonUI("btn_exit", "退出游戏", ()->Gdx.app.exit());
+    }
 
     private void createButtonUI(String id, String text, Runnable action){
         TextButton.TextButtonStyle style = styleModule.getStyle(TextButton.TextButtonStyle.class);
@@ -72,7 +76,7 @@ public class UIManager {
             }
         });
 
-        uiMap.put(id, new Table());
+        uiMap.put(id, btn);
 
     }
 }

@@ -28,13 +28,7 @@ public class MainMenuScreen extends BaseScreen {
         Gdx.input.setInputProcessor(stage);  // 将输入交给 stage 处理
 
         // 使用 Table 布局
-        Table table = new Table();
-        table.setFillParent(true);  // 铺满整个屏幕
-
-        // 创建按钮
-        addButton(table, "开始游戏", ()-> screenModule.getScreenManager().switchTo(GameScreen.class));
-        addButton(table, "设置", ()->System.out.println("设置按钮"));
-        addButton(table, "退出", Gdx.app::exit);
+        Table table = layOutModule.getTable("mainMenu");
 
         stage.addActor(table);  // 将表格添加到舞台中
 
@@ -80,24 +74,4 @@ public class MainMenuScreen extends BaseScreen {
 
     }
 
-    private void addButton(Table table, String text, Runnable action) {
-        // 手动创建按钮
-        TextButton.TextButtonStyle style = styleModule.getStyle(TextButton.TextButtonStyle.class);
-
-
-        style.font = styleModule.getFont();
-
-        TextButton btn = new TextButton(text, style);
-
-        btn.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                if (action != null) action.run();
-            }
-        });
-
-        table.add(btn).pad(10).width(200).height(50);
-
-        table.row();
-    }
 }

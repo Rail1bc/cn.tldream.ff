@@ -4,6 +4,7 @@ import cn.tldream.ff.module.core.ModuleManager;
 import cn.tldream.ff.module.core.config.ConfigKey;
 import cn.tldream.ff.module.core.config.ConfigModule;
 import cn.tldream.ff.module.core.resource.ResourceModule;
+import cn.tldream.ff.module.core.screen.LayOutModule;
 import cn.tldream.ff.module.core.screen.ScreenModule;
 import cn.tldream.ff.module.core.screen.StyleModule;
 import cn.tldream.ff.module.core.screen.UIModule;
@@ -40,6 +41,7 @@ public class FightGame extends Game {
             .register("style", new StyleModule())
             .register("ui",new UIModule())
             .register("screen", new ScreenModule(this))
+            .register("layout", new LayOutModule())
         ;
 
 
