@@ -65,8 +65,4 @@ public class StyleManager {
 
         return myBigFont;
     }
-
-    public void resize(){
-
-    }
 }

@@ -70,6 +70,7 @@ public class StyleModule implements GameModule {
         return styleManager.getFont();
     }
 
+    /*获取样式*/
     public <T> T getStyle(Class<T> type){
         return getSkin().get(type);
     }
