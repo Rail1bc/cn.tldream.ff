@@ -11,6 +11,8 @@ import cn.tldream.ff.module.core.screen.UIModule;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 /** {@link Game} implementation shared by all platforms. */
 /**
@@ -32,6 +34,9 @@ public class FightGame extends Game {
 
     @Override
     public void create() {
+
+
+
         Gdx.app.setLogLevel(3);
 
         // 注册模块
@@ -50,6 +55,8 @@ public class FightGame extends Game {
 
         Gdx.app.setLogLevel(ConfigModule.getInstance().getConfig(ConfigKey.LOG_LEVEL)); // 设置日志级别为调试级别
 
+
+
         applyWindowConfig();
     }
 
@@ -66,9 +73,9 @@ public class FightGame extends Game {
 
     @Override
     public void resize(int width, int height) {
-        super.resize(width, height);
         config.setConfig(ConfigKey.WINDOW_WIDTH, width);
         config.setConfig(ConfigKey.WINDOW_HEIGHT, height);
+        super.resize(width, height);
         applyWindowConfig();
     }
 

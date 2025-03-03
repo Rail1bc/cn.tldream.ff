@@ -54,12 +54,16 @@ public class LayOutManager {
         Table table = new Table();
         table.setFillParent(true);
         table.setDebug(true);
+        table.defaults().spaceBottom(20).width(200)
+            .fill(false);
         Button btn = uiModule.getUI("btn_start");
-        table.add(btn).pad(10).width(200).height(50);
+        table.add(btn).height(50);
+        table.row();
         btn = uiModule.getUI("btn_setting");
-        table.add(btn).pad(10).width(200).height(50);
+        table.add(btn).height(50);
+        table.row();
         btn = uiModule.getUI("btn_exit");
-        table.add(btn).pad(10).width(200).height(50);
+        table.add(btn).height(50);
 
         tableMap.put("mainMenu", table);
     }

@@ -9,6 +9,7 @@ import cn.tldream.ff.module.core.screen.StyleModule;
 import cn.tldream.ff.module.core.screen.UIModule;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 public abstract class BaseScreen implements Screen {
     protected FightGame game;
@@ -21,13 +22,13 @@ public abstract class BaseScreen implements Screen {
     private boolean assetsLoaded = false;   // 资源是否加载
 
     public BaseScreen(FightGame game) {
-        stage = new Stage();
         this.game = game;
         screenModule = ModuleManager.getModule("screen", ScreenModule.class);
         resourceModule = ModuleManager.getModule("resource", ResourceModule.class);
         styleModule = ModuleManager.getModule("style", StyleModule.class);
         uiModule = ModuleManager.getModule("ui", UIModule.class);
         layOutModule = ModuleManager.getModule("layout", LayOutModule.class);
+        stage = new Stage(screenModule.getViewport());
     }
 
     public abstract void loadAssets();
@@ -43,5 +44,10 @@ public abstract class BaseScreen implements Screen {
     @Override
     public void show(){
 
+    }
+
+    @Override
+    public void resize(int width, int height){
+        stage.getViewport().update(width, height, true);
     }
 }
