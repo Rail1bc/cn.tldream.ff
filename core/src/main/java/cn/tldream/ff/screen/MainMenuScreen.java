@@ -4,6 +4,8 @@ import cn.tldream.ff.FightGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Value;
+import com.badlogic.gdx.utils.Align;
 
 public class MainMenuScreen extends BaseScreen {
     private final String className = "主菜单界面";
@@ -25,9 +27,16 @@ public class MainMenuScreen extends BaseScreen {
         Gdx.input.setInputProcessor(stage);  // 将输入交给 stage 处理
 
         // 使用 Table 布局
-        Table table = layOutModule.getTable("mainMenu");
+        Table rootTable = new Table();
+        rootTable.setFillParent(true);
+        Table spacerTable = new Table();
+        rootTable.add(spacerTable).width(Value.percentWidth(0.625f,rootTable));
+        rootTable.add(layOutModule.getTable("mainMenu"))
+            .width(Value.percentWidth(0.25f,rootTable))
+            .height(Value.percentHeight(1f,rootTable))
+        ;
 
-        stage.addActor(table);  // 将表格添加到舞台中
+        stage.addActor(rootTable);  // 将表格添加到舞台中
 
     }
 

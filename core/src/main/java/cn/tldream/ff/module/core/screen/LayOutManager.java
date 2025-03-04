@@ -1,11 +1,11 @@
 package cn.tldream.ff.module.core.screen;
 
 
-import cn.tldream.ff.module.core.config.ConfigKey;
 import cn.tldream.ff.module.core.config.ConfigModule;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.utils.Align;
 
 import java.util.Map;
@@ -57,21 +57,21 @@ public class LayOutManager {
     /*创建开始桌面*/
     private void createMainMenuTable(){
         Table table = new Table();
-        table.setSize(200,600);
-        table.setPosition(200,0 , Align.left);
         table.setFillParent(false);
-        table.right();
         table.setDebug(true);
-//        table.align(Align.topRight);
-        table.defaults().spaceBottom(20).width(200).fill(false);
+        table.defaults()
+            .spaceBottom(Value.percentHeight(0.025f, table))
+            .width(Value.percentWidth(0.9f, table))
+            .height(Value.percentHeight(0.07f, table))
+        ;
         Button btn = uiModule.getUI("btn_start");
-        table.add(btn).height(50).fill(false);
+        table.add(btn);
         table.row();
         btn = uiModule.getUI("btn_setting");
-        table.add(btn).height(50).fill(false);
+        table.add(btn);
         table.row();
         btn = uiModule.getUI("btn_exit");
-        table.add(btn).height(50).fill(false);
+        table.add(btn);
 
         tableMap.put("mainMenu", table);
     }
