@@ -1,9 +1,13 @@
 {
   "font": {
     "ttf": {
-      "cn": {
+      "default": {
         "type": "font",
         "path": "font/simhei.ttf"
+      },
+      "cn": {
+        "type": "font",
+        "path": "font/ChillJinshuSongBold.otf"
       }
     }
   }

@@ -138,7 +138,7 @@ public class ResourceManager extends AssetManager{
      * */
     private void freeTypeFontLoader(){
         setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
-        setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
+        setLoader(BitmapFont.class, ".otf", new FreetypeFontLoader(resolver));
 
         this.parameter = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         parameter.fontParameters.incremental = true;
