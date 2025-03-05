@@ -14,6 +14,7 @@ public class UIManager {
     private final String className = "UI管理器";
     private StyleModule styleModule; // 样式管理模块实例
     private final Map<String, Table> uiMap;
+    private TextButton.TextButtonStyle textButtonStyle;
 
     /*
      * 生命周期方法
@@ -35,6 +36,7 @@ public class UIManager {
     /*预初始化*/
     public void preInit(){
         Gdx.app.debug(className, "预初始化");
+        styleInit();
         createUI();
     }
 
@@ -53,6 +55,12 @@ public class UIManager {
     * 私有方法
     * */
 
+    /*初始化样式*/
+    private void styleInit(){
+        textButtonStyle = styleModule.getStyle(TextButton.TextButtonStyle.class);
+        textButtonStyle.font = styleModule.getFont();
+    }
+
     private void createUI(){
         createButtonUI("btn_start", "开始游戏", ()-> ModuleManager.getModule("screen",ScreenModule.class).switchTo(GameScreen.class));
         createButtonUI("btn_setting", "设置", ()->System.out.println("设置按钮"));
@@ -60,13 +68,7 @@ public class UIManager {
     }
 
     private void createButtonUI(String id, String text, Runnable action){
-        TextButton.TextButtonStyle style = styleModule.getStyle(TextButton.TextButtonStyle.class);
-
-
-        style.font = styleModule.getFont();
-
-        TextButton btn = new TextButton(text, style);
-
+        TextButton btn = new TextButton(text, textButtonStyle);
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -75,6 +77,5 @@ public class UIManager {
         });
 
         uiMap.put(id, btn);
-
     }
 }

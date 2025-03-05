@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.AbsoluteFileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
@@ -142,6 +143,8 @@ public class ResourceManager extends AssetManager{
 
         this.parameter = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         parameter.fontParameters.incremental = true;
+        parameter.fontParameters.minFilter = Texture.TextureFilter.Linear;
+        parameter.fontParameters.magFilter = Texture.TextureFilter.Linear;
     }
 
 
