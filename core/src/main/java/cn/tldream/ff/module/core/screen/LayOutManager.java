@@ -4,6 +4,7 @@ package cn.tldream.ff.module.core.screen;
 import cn.tldream.ff.module.core.config.ConfigModule;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.utils.Align;
@@ -59,11 +60,14 @@ public class LayOutManager {
         Table table = new Table();
         table.setFillParent(false);
         table.setDebug(true);
+        table.top().padTop(Value.percentHeight(0.1f, table));
         table.defaults()
             .spaceBottom(Value.percentHeight(0.025f, table))
             .width(Value.percentWidth(0.9f, table))
-            .height(Value.percentHeight(0.07f, table))
+            .height(Value.percentHeight(0.07f, table)).row();
         ;
+        Label label = uiModule.getUI("label_title");
+        table.add(label).row();
         Button btn = uiModule.getUI("btn_start");
         table.add(btn);
         table.row();

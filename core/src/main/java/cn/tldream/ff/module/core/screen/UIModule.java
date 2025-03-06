@@ -3,6 +3,7 @@ package cn.tldream.ff.module.core.screen;
 import cn.tldream.ff.module.GameModule;
 import cn.tldream.ff.module.core.ModuleManager;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import java.util.Map;
@@ -12,7 +13,7 @@ public class UIModule implements GameModule {
     private final String className = "UI管理模块";
     private final UIManager uiManager; // UI管理器实例
     private StyleModule styleModule;
-    private final Map<String, Table> uiMap = new ConcurrentHashMap<>();
+    private final Map<String, Actor> uiMap = new ConcurrentHashMap<>();
 
     /*
      * 生命周期方法
@@ -66,7 +67,7 @@ public class UIModule implements GameModule {
     }
 
     /*服务方法*/
-    public <T extends Table> T getUI(String id) {
+    public <T extends Actor> T getUI(String id) {
         return (T) uiMap.get(id);
     }
 }

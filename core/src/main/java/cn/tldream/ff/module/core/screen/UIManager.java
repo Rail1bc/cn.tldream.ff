@@ -3,7 +3,9 @@ package cn.tldream.ff.module.core.screen;
 import cn.tldream.ff.module.core.ModuleManager;
 import cn.tldream.ff.screen.GameScreen;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -13,7 +15,7 @@ import java.util.Map;
 public class UIManager {
     private final String className = "UI管理器";
     private StyleModule styleModule; // 样式管理模块实例
-    private final Map<String, Table> uiMap;
+    private final Map<String, Actor> uiMap;
     private TextButton.TextButtonStyle textButtonStyle;
 
     /*
@@ -22,7 +24,7 @@ public class UIManager {
      * */
 
     /*构造函数*/
-    public UIManager(Map<String, Table> uiMap){
+    public UIManager(Map<String, Actor> uiMap){
         Gdx.app.debug(className, "实例化");
         this.uiMap = uiMap;
     }
@@ -65,6 +67,7 @@ public class UIManager {
         createButtonUI("btn_start", "开始游戏", ()-> ModuleManager.getModule("screen",ScreenModule.class).switchTo(GameScreen.class));
         createButtonUI("btn_setting", "设置", ()->System.out.println("设置按钮"));
         createButtonUI("btn_exit", "退出游戏", ()->Gdx.app.exit());
+//        createLabelUI("label_title", "FG游戏");
     }
 
     private void createButtonUI(String id, String text, Runnable action){
@@ -77,5 +80,10 @@ public class UIManager {
         });
 
         uiMap.put(id, btn);
+    }
+
+    private void createLabelUI(String id, String text){
+        Label label = new Label(text, styleModule.getSkin());
+        uiMap.put(id, label);
     }
 }

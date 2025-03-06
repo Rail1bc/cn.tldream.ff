@@ -3,8 +3,6 @@ package cn.tldream.ff.module.core.screen;
 import cn.tldream.ff.module.GameModule;
 import cn.tldream.ff.module.core.ModuleManager;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import java.util.Map;

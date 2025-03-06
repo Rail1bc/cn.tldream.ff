@@ -15,6 +15,7 @@ dependencies {
   testImplementation "org.mockito:mockito-core:3.12.4"
   testImplementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
 
+  implementation 'com.github.raeleus.stripe:stripe:2.0.0'
   if(enableGraalNative == 'true') {
     implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
   }
