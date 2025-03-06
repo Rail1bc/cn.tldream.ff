@@ -60,7 +60,7 @@ public class UIManager {
     /*初始化样式*/
     private void styleInit(){
         textButtonStyle = styleModule.getStyle(TextButton.TextButtonStyle.class);
-        textButtonStyle.font = styleModule.getFont();
+//        textButtonStyle.font = styleModule.getFont();
     }
 
     private void createUI(){

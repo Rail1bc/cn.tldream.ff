@@ -6,6 +6,7 @@ import cn.tldream.ff.module.core.resource.ResourceModule;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
@@ -35,8 +36,15 @@ public class StyleManager {
     /*预初始化*/
     public void preInit(){
         Gdx.app.debug(className, "预初始化");
+        skin = new Skin();
 
-        skin = resourceModule.loadAndGet("vanilla:skin.uiskin.default");
+        int fontSize = configModule.getConfig(ConfigKey.WINDOW_WIDTH);
+        resourceModule.setParameterFillName("vanilla:font.ttf.cn",fontSize/40); // 设置字体、大小，同步加载
+
+        skin.add("cn",resourceModule.get("vanilla:font.ttf.cn"));
+        skin.addRegions(new TextureAtlas("G:\\Object\\FG\\assets\\ui\\uiskin.atlas"));
+        skin.load(Gdx.files.internal("G:\\Object\\FG\\assets\\ui\\uiskin.json"));
+//        skin = resourceModule.loadAndGet("vanilla:skin.uiskin.default");
     }
 
     /*主初始化*/
