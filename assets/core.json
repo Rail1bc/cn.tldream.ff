@@ -15,6 +15,10 @@
         "type": "json",
         "path": "config/skin.json"
       },
+      "atlas": {
+        "type": "json",
+        "path": "config/atlas.json"
+      },
       "texture": {
         "type": "json",
         "path": "config/texture.json"

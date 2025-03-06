@@ -65,10 +65,6 @@ public class StyleModule implements GameModule {
         return styleManager.getSkin();
     }
 
-    /*获取字体*/
-    public BitmapFont getFont() {
-        return styleManager.getFont();
-    }
 
     /*获取样式*/
     public <T> T getStyle(Class<T> type){

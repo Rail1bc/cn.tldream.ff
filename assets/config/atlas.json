@@ -1,0 +1,10 @@
+{
+  "atlas": {
+    "uiskin": {
+      "default": {
+        "type": "atlas",
+        "path": "ui/uiskin.atlas"
+      }
+    }
+  }
+}

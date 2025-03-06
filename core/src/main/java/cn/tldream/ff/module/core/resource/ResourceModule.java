@@ -5,6 +5,7 @@ import cn.tldream.ff.module.core.ModuleManager;
 import cn.tldream.ff.module.core.config.ConfigModule;
 import cn.tldream.ff.module.core.resource.descriptor.ResourceDescriptor;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
@@ -158,5 +159,9 @@ public class ResourceModule implements GameModule {
         resourceManager.setParameter(id,size);
     }
 
+    public FileHandle getFileHandle(String id){
+        ResourceDescriptor resd = configModule.getResource(id);
+        return resourceManager.getFileHandle(resd.getPath());
+    }
 
 }

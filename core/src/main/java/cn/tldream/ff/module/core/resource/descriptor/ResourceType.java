@@ -2,6 +2,7 @@ package cn.tldream.ff.module.core.resource.descriptor;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.JsonValue;
 
@@ -12,7 +13,8 @@ public enum ResourceType {
     skin(Skin.class),
     json( JsonValue.class),
     properties(Properties.class),
-    font(BitmapFont.class);
+    font(BitmapFont.class),
+    atlas(TextureAtlas.class);
 
     private final Class<?> val;
 

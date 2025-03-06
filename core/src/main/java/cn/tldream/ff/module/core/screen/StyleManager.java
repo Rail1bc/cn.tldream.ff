@@ -42,9 +42,8 @@ public class StyleManager {
         resourceModule.setParameterFillName("vanilla:font.ttf.cn",fontSize/40); // 设置字体、大小，同步加载
 
         skin.add("cn",resourceModule.get("vanilla:font.ttf.cn"));
-        skin.addRegions(new TextureAtlas("G:\\Object\\FG\\assets\\ui\\uiskin.atlas"));
-        skin.load(Gdx.files.internal("G:\\Object\\FG\\assets\\ui\\uiskin.json"));
-//        skin = resourceModule.loadAndGet("vanilla:skin.uiskin.default");
+        skin.addRegions(resourceModule.loadAndGet("vanilla:atlas.uiskin.default"));
+        skin.load(resourceModule.getFileHandle("vanilla:skin.uiskin.default"));
     }
 
     /*主初始化*/
@@ -61,19 +60,4 @@ public class StyleManager {
         return skin;
     }
 
-    /**
-     * 获取字体
-     * @return 字体
-     * */
-    public BitmapFont getFont(){
-        int fontSize = configModule.getConfig(ConfigKey.WINDOW_WIDTH);
-        resourceModule.setParameterFillName("vanilla:font.ttf.cn",fontSize/40); // 设置字体、大小，同步加载
-        // 获取字体
-        BitmapFont myBigFont = resourceModule.get("vanilla:font.ttf.cn");
-        // 设置字体支持Markup
-        myBigFont.getData().markupEnabled = true;
-
-
-        return myBigFont;
-    }
 }

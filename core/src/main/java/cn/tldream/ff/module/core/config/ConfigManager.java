@@ -81,6 +81,7 @@ public class ConfigManager implements Disposable{
         loadJson(resourceModule.loadAndGet("vanilla:core")); // 读取核心配置
         loadJson(resourceModule.loadAndGet("vanilla:config.resources.font")); // 读取字体资源配置
         loadJson(resourceModule.loadAndGet("vanilla:config.resources.skin")); // 读取皮肤资源配置
+        loadJson(resourceModule.loadAndGet("vanilla:config.resources.atlas")); // 读取图集资源配置
         loadJson(resourceModule.loadAndGet("vanilla:config.resources.texture")); // 读取纹理资源配置
 
 //        for(String entry : idMap.keySet()){ // 遍历idMap
@@ -113,6 +114,7 @@ public class ConfigManager implements Disposable{
             case "skin" -> new SkinDes(json.getString("path"));
             case "texture" -> new TextureDes(json.getString("path"));
             case "font" -> new FontDes(json.getString("path"));
+            case "atlas" -> new AtlasDes(json.getString("path"));
             default -> null;
         };
     }
